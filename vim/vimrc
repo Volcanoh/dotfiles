@@ -1,0 +1,170 @@
+let mapleader=";"
+"noremap \ ,
+filetype on
+filetype plugin on
+noremap <Leader>b ^
+noremap<Leader>e $
+imap <leader>f <right>
+imap <leader>b <left>
+" 共享复制、粘贴
+noremap <Leader>y "+y
+noremap <Leader>p "+p
+
+" 关闭当前窗口
+nmap <Leader>q :q<CR>:call ToggleFullscreen()<CR>
+" 定义保存当前窗口
+nmap <Leader>w :w<CR>
+" 定义保存所有窗口并退出
+nmap <Leader>WQ :wa<CR>:q<CR>
+" 不做任何保存直接推出
+nmap <Leader>Q :qa!<CR>
+" 依次遍历子窗口
+nnoremap <Leader>nw <C-W><C-W>
+" 跳转至右方的窗口
+nnoremap <Leader>lw <C-W>l
+" 跳转至左方的窗口
+nnoremap <Leader>hw <C-W>h
+" 跳转至上方的窗口
+nnoremap <Leader>kw <C-W>k
+" 跳转至下方的窗口
+nnoremap <Leader>jw <C-W>j
+
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+noremap <Left> <Nop>
+noremap <Right> <Nop>
+noremap <Leader>n nzz
+noremap <Leader>N Nzz
+noremap j jzz
+noremap k kzz
+" 定义快捷建在结对之间跳转，助记pair
+nmap <Leader>pa %
+" 设置实时搜索功能
+set incsearch
+" 设置自身命令行补全
+set wildmenu
+" 开启兼容模式
+set nocompatible
+" 总是显示状态栏
+set laststatus=2
+" 显示光标当前位置
+set ruler
+" 开启行号显示
+set number
+" 高亮显示当前行/列
+set cursorline
+set cursorcolumn
+" 禁止光标闪烁
+set gcr=a:block-blinkon0
+" 禁止显示滚动条
+set guioptions-=l
+set guioptions-=L
+set guioptions-=r
+set guioptions-=R
+set guioptions-=m
+set guioptions-=T
+" 鼠标
+set mouse-=a
+syntax on
+syntax enable
+set number
+set tabstop=4
+set shiftwidth=4
+set expandtab
+filetype indent on
+set incsearch
+set hlsearch
+set foldmethod=indent "remember zM-->fold all  zR -->unfold all  za -->fold/ unfold
+":set timeout timeoutlen=200 ttimeoutlen=-1
+imap jk <Esc>
+imap `` ~
+imap 11 !
+imap 22 @
+imap 33 #
+imap 44 $
+imap 55 %
+imap 66 ^
+imap 77 &
+imap 88 *
+imap 99 (
+imap 00 )
+" 进入vim时全屏
+" 将外部命令 wmctrl 控制窗口最大化的命令行参数封装成一个 vim 的函数
+fun! ToggleFullscreen()
+    call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")
+endf
+" 全屏开/关快捷键
+map <silent> <F11> :call ToggleFullscreen()<CR>
+" 启动 vim 时自动全屏
+autocmd VimEnter * call ToggleFullscreen()
+
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'tomasr/molokai'
+Plugin 'gmarik/ingretu'
+Plugin 'rainux/vim-desert-warm-256'
+Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'kshenoy/vim-signature'
+Plugin 'Yggdroot/hiPairs'
+"Plugin 'Yggdroot/TabBar'
+Plugin 'Yggdroot/indentLine'
+" 自动生成tag
+Bundle 'DfrankUtil'
+Bundle 'Vimprj'
+Bundle 'vim-scripts/indexer.tar.gz'
+" YCM
+Bundle 'Valloric/YouCompleteMe'
+Bundle 'rdnetto/YCM-Generator'
+call vundle#end()
+
+" #############配色方案###############
+set background=dark
+set t_Co=256
+let g:rehash256 = 1
+"let g:solarized_termcolors=256
+let g:molokai_original = 1
+"colorscheme solarized
+colorscheme molokai
+let g:Powerline_colorscheme='solarized256'
+"" #############indexer##############
+" 设置插件 indexer 调用 ctags 的参数
+" " 默认 --c++-kinds=+p+l，重新设置为 --c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
+" " 默认 --fields=+iaS 不满足 YCM 要求，需改为 --fields=+iaSl
+let g:indexer_ctagsCommandLineOptions="--c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v --fields=+iaSl --extra=+q"
+
+" ######NERDtrss########################
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+map <C-n> :NERDTreeToggle<CR>
+" ######ctags#################################
+:set tags+=./tags
+" 正向遍历同名标签
+nmap <Leader>tn :tnext<CR>
+" 反向遍历同名标签
+nmap <Leader>tp :tprevious<CR>
+
+" #############YouCompleteMe#######
+let g:ycm_server_use_vim_stdout = 1
+let g:ycm_confirm_extra_conf = 0
+"let g:ycm_server_log_level = 'debug'
+
+"let g:ycm_extra_conf_globlist = ['~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py']
+let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_warning_symbol = '>>'
+let g:ycm_error_symbol = '*>'
+"nnoremap <leader>jd :tab split<CR>:exec("YcmCompleter GoTo ")<CR>
+nnoremap <leader>jd :vsp <CR>:exec("YcmCompleter GoTo ")<CR>
+nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
+" <lead> d can display diags
+" ##############################################################
+" open ctag in tab/vertical split
+map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+map <leader><C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+" open ctag in tab/vertical split
+map <leader><C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+map <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
