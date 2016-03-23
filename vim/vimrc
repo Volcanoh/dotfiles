@@ -4,22 +4,18 @@ filetype on
 filetype plugin on
 noremap <Leader>b ^
 noremap<Leader>e $
-imap <leader>f <right>
-imap <leader>b <left>
+noremap<Leader>a A
+imap <C-f> <right>
+imap <C-b> <left>
 " 共享复制、粘贴
 noremap <Leader>y "+y
 noremap <Leader>p "+p
 
 " 关闭当前窗口
-nmap <Leader>q :q<CR>:call ToggleFullscreen()<CR>
+nmap <Leader>q :q<CR>
+":call ToggleFullscreen()<CR>
 " 定义保存当前窗口
 nmap <Leader>w :w<CR>
-" 定义保存所有窗口并退出
-nmap <Leader>WQ :wa<CR>:q<CR>
-" 不做任何保存直接推出
-nmap <Leader>Q :qa!<CR>
-" 依次遍历子窗口
-nnoremap <Leader>nw <C-W><C-W>
 " 跳转至右方的窗口
 nnoremap <Leader>lw <C-W>l
 " 跳转至左方的窗口
@@ -74,21 +70,11 @@ set expandtab
 filetype indent on
 set incsearch
 set hlsearch
-set foldmethod=indent "remember zM-->fold all  zR -->unfold all  za -->fold/ unfold
+"remember zM-->fold all  zR -->unfold all  za -->fold/ unfold
+set foldmethod=indent 
 ":set timeout timeoutlen=200 ttimeoutlen=-1
 imap jk <Esc>
-imap `` ~
-imap 11 !
-imap 22 @
-imap 33 #
-imap 44 $
-imap 55 %
-imap 66 ^
-imap 77 &
-imap 88 *
-imap 99 (
-imap 00 )
-" 进入vim时全屏
+vmap jk <Esc>
 " 将外部命令 wmctrl 控制窗口最大化的命令行参数封装成一个 vim 的函数
 fun! ToggleFullscreen()
     call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")
@@ -96,7 +82,7 @@ endf
 " 全屏开/关快捷键
 map <silent> <F11> :call ToggleFullscreen()<CR>
 " 启动 vim 时自动全屏
-autocmd VimEnter * call ToggleFullscreen()
+"autocmd VimEnter * call ToggleFullscreen()
 
 
 " set the runtime path to include Vundle and initialize
@@ -112,16 +98,18 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'kshenoy/vim-signature'
 Plugin 'Yggdroot/hiPairs'
 "Plugin 'Yggdroot/TabBar'
-Plugin 'Yggdroot/indentLine'
 " 自动生成tag
 Bundle 'DfrankUtil'
 Bundle 'Vimprj'
 Bundle 'vim-scripts/indexer.tar.gz'
 " YCM
 Bundle 'Valloric/YouCompleteMe'
-Bundle 'rdnetto/YCM-Generator'
+" latex
+Bundle 'vim-latex/vim-latex'
 call vundle#end()
-
+"latex output pdf
+let g:Tex_DefaultTargetFormat='pdf'
+let g:Tex_CompileRule_pdf = 'pdflatex --synctex=-1 -src-specials -interaction=nonstopmode $*'
 " #############配色方案###############
 set background=dark
 set t_Co=256
