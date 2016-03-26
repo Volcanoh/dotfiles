@@ -87,3 +87,8 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 
+[ -z "$TMUX" ] && export TERM=xterm-256color
+
+export EDITOR=vim
+[[ -s $HOME/.tmuxinator/scripts/tmuxinator ]] && source $HOME/.tmuxinator/scripts/tmuxinator
+
