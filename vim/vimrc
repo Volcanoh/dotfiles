@@ -1,8 +1,8 @@
 let mapleader=";"
-"noremap \ ,
 filetype on
-filetype plugin on
+filetype plugin on 
 noremap <Leader>b ^
+
 noremap<Leader>e $
 noremap<Leader>a A
 imap <C-f> <right>
@@ -13,26 +13,17 @@ noremap <Leader>p "+p
 
 " 关闭当前窗口
 nmap <Leader>q :q<CR>
-":call ToggleFullscreen()<CR>
 " 定义保存当前窗口
 nmap <Leader>w :w<CR>
-" 跳转至右方的窗口
-nnoremap <Leader>lw <C-W>l
-" 跳转至左方的窗口
-nnoremap <Leader>hw <C-W>h
-" 跳转至上方的窗口
-nnoremap <Leader>kw <C-W>k
-" 跳转至下方的窗口
-nnoremap <Leader>jw <C-W>j
 
 noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
-noremap <Leader>n nzz
-noremap <Leader>N Nzz
-noremap j jzz
-noremap k kzz
+noremap n nzz
+noremap N Nzz
+noremap j gjzz
+noremap k gkzz
 " 定义快捷建在结对之间跳转，助记pair
 nmap <Leader>pa %
 " 设置实时搜索功能
@@ -52,14 +43,6 @@ set cursorline
 set cursorcolumn
 " 禁止光标闪烁
 set gcr=a:block-blinkon0
-" 禁止显示滚动条
-set guioptions-=l
-set guioptions-=L
-set guioptions-=r
-set guioptions-=R
-set guioptions-=m
-set guioptions-=T
-" 鼠标
 set mouse-=a
 syntax on
 syntax enable
@@ -72,7 +55,6 @@ set incsearch
 set hlsearch
 "remember zM-->fold all  zR -->unfold all  za -->fold/ unfold
 set foldmethod=indent 
-":set timeout timeoutlen=200 ttimeoutlen=-1
 imap jk <Esc>
 vmap jk <Esc>
 " 将外部命令 wmctrl 控制窗口最大化的命令行参数封装成一个 vim 的函数
@@ -81,14 +63,23 @@ fun! ToggleFullscreen()
 endf
 " 全屏开/关快捷键
 map <silent> <F11> :call ToggleFullscreen()<CR>
-" 启动 vim 时自动全屏
-"autocmd VimEnter * call ToggleFullscreen()
 
-
+nnoremap <leader>rs :source ~/.vimrc<CR>
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
+Plugin 'tpope/vim-repeat' "use . to repeat plugin command
+Plugin 'tpope/vim-surround' "ysiw]
+Plugin 'tpope/vim-commentary' "a motion to comment [gc]
+Plugin 'tpose/vim-git' "for git
+Plugin 'tpose/vim-fugitive' "for git
+Plugin 'DoxygenToolkit.vim'
+Plugin 'Raimondi/delimitMate' "auto add {} [] () and so on"
+Plugin  'scrooloose/syntastic'
+Plugin 'L9'
+Plugin 'FuzzyFinder'
+Plugin 'kien/ctrlp.vim'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'tomasr/molokai'
 Plugin 'gmarik/ingretu'
@@ -97,19 +88,99 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'kshenoy/vim-signature'
 Plugin 'Yggdroot/hiPairs'
-"Plugin 'Yggdroot/TabBar'
-" 自动生成tag
-Bundle 'DfrankUtil'
-Bundle 'Vimprj'
-Bundle 'vim-scripts/indexer.tar.gz'
-" YCM
-Bundle 'Valloric/YouCompleteMe'
-" latex
-Bundle 'vim-latex/vim-latex'
+"自动生成tag{{{
+Plugin 'DfrankUtil'
+Plugin 'Vimprj'
+Plugin 'vim-scripts/indexer.tar.gz'
+"}}}
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'vim-latex/vim-latex' " latex
 call vundle#end()
-"latex output pdf
+
+" begin Doxygen{{{
+let g:DoxygenToolkit_briefTag_funcName = "yes"
+" for C++ style, change the '@' to '\'
+let g:DoxygenToolkit_commentType = "C++"
+let g:DoxygenToolkit_briefTag_pre = "\\brief "
+let g:DoxygenToolkit_templateParamTag_pre = "\\tparam "
+let g:DoxygenToolkit_paramTag_pre = "\\param "
+let g:DoxygenToolkit_returnTag = "\\return "
+let g:DoxygenToolkit_throwTag_pre = "\\throw " " @exception is also valid
+let g:DoxygenToolkit_fileTag = "\\file "
+let g:DoxygenToolkit_dateTag = "\\date "
+let g:DoxygenToolkit_authorTag = "\\author "
+"let g:DoxygenToolkit_versionTag = "\\version "
+let g:DoxygenToolkit_blockTag = "\\name "
+let g:DoxygenToolkit_classTag = "\\class "
+let g:DoxygenToolkit_authorName = "volcanoh <huang.volcano@gmail.com>"
+let g:DoxygenToolkit_blockHeader="--------------------------------------------------------------"
+let g:DoxygenToolkit_blockFooter="--------------------------------------------------------------"
+let g:DoxygenToolkit_licenseTag="GPL"
+let g:doxygen_enhanced_color = 1
+" C++ style
+let g:DoxygenToolKit_startCommentBlock = "/// "
+let g:DoxygenToolKit_interCommentBlock = "/// "
+"creat doxgen comment
+map <leader>dd :Dox<CR>
+map <leader>da :DoxAuthor<CR>
+map <leader>dl :DoxLic<cr>
+"let g:load_doxygen_syntax = 1
+" end}}}
+
+" begin git{{{ 
+nnoremap <leader>gw :Gwrite<CR>
+nnoremap <leader>gc :Gcommit -v<CR>
+nnoremap <leader>gs :Gstatus \| 7<CR>
+inoremap <leader>gw <Esc><leader>gw
+inoremap <leader>gc <Esc><leader>gc
+inoremap <leader>gs <Esc><leader>gs
+" end}}}
+
+" beginFuF customisations "{{{
+let g:fuf_modesDisable = []
+nnoremap <leader>h :FufHelp<CR>
+nnoremap <leader>1  :FufTagWithCursorWord<CR>
+nnoremap <leader>11 :FufTag<CR>
+nnoremap <leader>2  :FufFileWithCurrentBufferDir<CR>
+nnoremap <leader>22 :FufFile<CR>
+nnoremap <leader>3  :FufBuffer<CR>
+nnoremap <leader>4  :FufDirWithCurrentBufferDir<CR>
+nnoremap <leader>44 :FufDir<CR>
+nnoremap <leader>5  :FufBufferTag<CR>
+nnoremap <leader>55 :FufBufferTagAll<CR>
+nnoremap <leader>6  :FufMruFile<CR>
+nnoremap <leader>7  :FufLine<CR>
+nnoremap <leader>8  :FufChangeList<CR>
+nnoremap <leader>9  :FufTaggedFile<CR>
+" end}}}
+
+" begin delimitMate mappings{{{
+let delimitMate_matchpairs = "(:),[:],{:},<:>"
+au FileType cpp let b:delimitMate_matchpairs = "(:),[:],{:}"
+" end }}}
+
+"befin config syntastic {{{
+let g:syntastic_check_on_open=1
+let g:syntastic_cpp_include_dirs = ['/usr/include/']
+let g:syntastic_cpp_remove_include_errors = 1
+let g:syntastic_cpp_check_header = 1
+let g:syntastic_cpp_compiler = 'clang++'
+let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libstdc++'
+"set error or warning signs
+let g:syntastic_error_symbol = '✗'
+let g:syntastic_warning_symbol = '⚠'
+"whether to show balloons
+let g:syntastic_enable_balloons = 1
+" end}}}
+"begin latex output pdf{{{
+"mappings for latex-box plugin{{{
+map <silent> <Leader>ls :silent !/Applications/Skim.app/Contents/SharedSupport/displayline
+            \ <C-R>=line('.')<CR> "<C-R>=LatexBox_GetOutputFile()<CR>" "%:p" <CR>
+autocmd filetype tex nnoremap F10 :!latexmk -pdf % 
+"}}}
 let g:Tex_DefaultTargetFormat='pdf'
 let g:Tex_CompileRule_pdf = 'pdflatex --synctex=-1 -src-specials -interaction=nonstopmode $*'
+"end }}}
 " #############配色方案###############
 set background=dark
 set t_Co=256
