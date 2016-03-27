@@ -77,9 +77,15 @@ Plugin 'tpose/vim-fugitive' "for git
 Plugin 'DoxygenToolkit.vim'
 Plugin 'Raimondi/delimitMate' "auto add {} [] () and so on"
 Plugin  'scrooloose/syntastic'
+Plugin 'ervandew/supertab'
+Plugin 'sirver/ultisnip'
+Plugin 'honza/vim-snippets'
 Plugin 'L9'
 Plugin 'FuzzyFinder'
 Plugin 'kien/ctrlp.vim'
+Plugin 'vim-scripts/qiushibaike'
+"Plugin 'itchyny/calendar.vim'
+Plugin 'hotoo/calendar-vim'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'tomasr/molokai'
 Plugin 'gmarik/ingretu'
@@ -96,6 +102,21 @@ Plugin 'vim-scripts/indexer.tar.gz'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'vim-latex/vim-latex' " latex
 call vundle#end()
+
+"ultisnips
+let g:UltiSnipsExpandTrigger="<c-c>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+" begin Calendar-vim{{{
+let g:calendar_list = [
+    \   {'name': 'Tasks', 'path': '~/KuaiPan/tasks', 'ext': 'task'},
+    \   {'name': 'Diary', 'path': '~/KuaiPan/diary', 'ext': 'diary'},
+\ ]
+let g:calendar_current_idx = 1
+" end}}}
 
 " begin Doxygen{{{
 let g:DoxygenToolkit_briefTag_funcName = "yes"
@@ -126,7 +147,10 @@ map <leader>da :DoxAuthor<CR>
 map <leader>dl :DoxLic<cr>
 "let g:load_doxygen_syntax = 1
 " end}}}
-
+" begin Calendar{{{
+let g:calendar_google_calendar = 1
+let g:calendar_google_task = 1
+" end}}
 " begin git{{{ 
 nnoremap <leader>gw :Gwrite<CR>
 nnoremap <leader>gc :Gcommit -v<CR>
