@@ -65,7 +65,6 @@ endf
 map <silent> <F11> :call ToggleFullscreen()<CR>
 
 nnoremap <leader>rs :source ~/.vimrc<CR>
-" set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
@@ -75,17 +74,23 @@ Plugin 'tpope/vim-commentary' "a motion to comment [gc]
 Plugin 'tpose/vim-git' "for git
 Plugin 'tpose/vim-fugitive' "for git
 Plugin 'DoxygenToolkit.vim'
-Plugin 'Raimondi/delimitMate' "auto add {} [] () and so on"
-Plugin  'scrooloose/syntastic'
+Plugin 'Raimondi/delimitMate' "auto add {} [] () and so on
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'drmingdrmer/xptemplate'
+Plugin  'scrooloose/syntastic' "show the error or warning of syntastic
 Plugin 'ervandew/supertab'
-Plugin 'sirver/ultisnip'
-Plugin 'honza/vim-snippets'
+"Plugin 'MarcWeber/vim-addon-mw-utils'
+"Plugin 'tomtom/tlib_vim'
+"Plugin 'garbas/vim-snipmate'
+"Plugin 'sirver/ultisnips'
+"Plugin 'honza/vim-snippets'
+Plugin 'vimwiki/vimwiki'
+
+Plugin 'vim-scripts/CmdlineCompl.vim'
 Plugin 'L9'
 Plugin 'FuzzyFinder'
 Plugin 'kien/ctrlp.vim'
-Plugin 'vim-scripts/qiushibaike'
-"Plugin 'itchyny/calendar.vim'
-Plugin 'hotoo/calendar-vim'
+Plugin 'itchyny/calendar.vim'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'tomasr/molokai'
 Plugin 'gmarik/ingretu'
@@ -94,31 +99,38 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'kshenoy/vim-signature'
 Plugin 'Yggdroot/hiPairs'
-"自动生成tag{{{
 Plugin 'DfrankUtil'
 Plugin 'Vimprj'
 Plugin 'vim-scripts/indexer.tar.gz'
-"}}}
-Plugin 'Valloric/YouCompleteMe'
 Plugin 'vim-latex/vim-latex' " latex
 call vundle#end()
 
+" xptenplate 
+" begin{{{-------------------------------------------------------------------------------
+let g:xptemplate_minimal_prefix = 0
+" end---------------------------------------------------------------------}}}
 "ultisnips
-let g:UltiSnipsExpandTrigger="<c-c>"
+" begin{{{--------------------------------------------------------------------------------
+let g:UltiSnipsExpandTrigger="<C-w>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
-" begin Calendar-vim{{{
-let g:calendar_list = [
-    \   {'name': 'Tasks', 'path': '~/KuaiPan/tasks', 'ext': 'task'},
-    \   {'name': 'Diary', 'path': '~/KuaiPan/diary', 'ext': 'diary'},
-\ ]
-let g:calendar_current_idx = 1
-" end}}}
+" end--------------------------------------------------------------------------------}}}
 
-" begin Doxygen{{{
+
+"" Calendar-vim
+"" begin {{{---------------------------------------------------------------------------
+let g:calendar_time_zone = "+0000"
+"let g:calendar_list = [
+    "\   {'name': 'Tasks', 'path': '~/KuaiPan/tasks', 'ext': 'task'},
+    "\   {'name': 'Diary', 'path': '~/KuaiPan/diary', 'ext': 'diary'},
+"\ ]
+"let g:calendar_current_idx = 1
+"" end----------------------------------------------------------------------------------}}}
+
+" Doxygen
+" begin{{{---------------------------------------------------------------------------
 let g:DoxygenToolkit_briefTag_funcName = "yes"
 " for C++ style, change the '@' to '\'
 let g:DoxygenToolkit_commentType = "C++"
@@ -146,21 +158,26 @@ map <leader>dd :Dox<CR>
 map <leader>da :DoxAuthor<CR>
 map <leader>dl :DoxLic<cr>
 "let g:load_doxygen_syntax = 1
-" end}}}
-" begin Calendar{{{
+" end----------------------------------------------------------------------------------}}}
+
+" Calendar
+" begin{{{---------------------------------------------------------------------------
 let g:calendar_google_calendar = 1
 let g:calendar_google_task = 1
-" end}}
-" begin git{{{ 
+" end--------------------------------------------------------------}}}
+
+" git
+" begin{{{--------------------------------------------------------------------------- 
 nnoremap <leader>gw :Gwrite<CR>
 nnoremap <leader>gc :Gcommit -v<CR>
 nnoremap <leader>gs :Gstatus \| 7<CR>
 inoremap <leader>gw <Esc><leader>gw
 inoremap <leader>gc <Esc><leader>gc
 inoremap <leader>gs <Esc><leader>gs
-" end}}}
+" end----------------------------------------------------------------------------------}}}
 
-" beginFuF customisations "{{{
+" FuF customisations 
+" begin"{{{---------------------------------------------------------------------------
 let g:fuf_modesDisable = []
 nnoremap <leader>h :FufHelp<CR>
 nnoremap <leader>1  :FufTagWithCursorWord<CR>
@@ -176,14 +193,16 @@ nnoremap <leader>6  :FufMruFile<CR>
 nnoremap <leader>7  :FufLine<CR>
 nnoremap <leader>8  :FufChangeList<CR>
 nnoremap <leader>9  :FufTaggedFile<CR>
-" end}}}
+" end----------------------------------------------------------------------------------}}}
 
-" begin delimitMate mappings{{{
+" delimitMate mappings
+" begin{{{---------------------------------------------------------------------------
 let delimitMate_matchpairs = "(:),[:],{:},<:>"
-au FileType cpp let b:delimitMate_matchpairs = "(:),[:],{:}"
-" end }}}
+"au FileType cpp let b:delimitMate_matchpairs = "(:),[:],{:}"
+" end ----------------------------------------------------------------------------------}}}
 
-"befin config syntastic {{{
+" config syntastic 
+" befin{{{---------------------------------------------------------------------------
 let g:syntastic_check_on_open=1
 let g:syntastic_cpp_include_dirs = ['/usr/include/']
 let g:syntastic_cpp_remove_include_errors = 1
@@ -195,17 +214,19 @@ let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
 "whether to show balloons
 let g:syntastic_enable_balloons = 1
-" end}}}
-"begin latex output pdf{{{
-"mappings for latex-box plugin{{{
+" end----------------------------------------------------------------------------------}}}
+
+"mappings for latex-box plugin
+" begin{{{---------------------------------------------------------------------------
 map <silent> <Leader>ls :silent !/Applications/Skim.app/Contents/SharedSupport/displayline
             \ <C-R>=line('.')<CR> "<C-R>=LatexBox_GetOutputFile()<CR>" "%:p" <CR>
 autocmd filetype tex nnoremap F10 :!latexmk -pdf % 
-"}}}
 let g:Tex_DefaultTargetFormat='pdf'
 let g:Tex_CompileRule_pdf = 'pdflatex --synctex=-1 -src-specials -interaction=nonstopmode $*'
-"end }}}
-" #############配色方案###############
+" end----------------------------------------------------------------------------------}}}
+
+" color theme
+" begin{{{----------------------------------------------------------------------------------------------
 set background=dark
 set t_Co=256
 let g:rehash256 = 1
@@ -214,16 +235,22 @@ let g:molokai_original = 1
 "colorscheme solarized
 colorscheme molokai
 let g:Powerline_colorscheme='solarized256'
+" end---------------------------------------------------------------------------------------}}}
+
+" indexer
+" begin{{{---------------------------------------------------------------------------------------------------
 "" #############indexer##############
 " 设置插件 indexer 调用 ctags 的参数
 " " 默认 --c++-kinds=+p+l，重新设置为 --c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
 " " 默认 --fields=+iaS 不满足 YCM 要求，需改为 --fields=+iaSl
 let g:indexer_ctagsCommandLineOptions="--c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v --fields=+iaSl --extra=+q"
+" end-------------------------------------------------------------------------------------------------------}}}
 
-" ######NERDtrss########################
+" NERDtrss
+" begin{{{-------------------------------------------------------------------------------------
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-map <C-n> :NERDTreeToggle<CR>
+"map <C-n> :NERDTreeToggle<CR>
 " ######ctags#################################
 :set tags+=./tags
 " 正向遍历同名标签
@@ -231,11 +258,11 @@ nmap <Leader>tn :tnext<CR>
 " 反向遍历同名标签
 nmap <Leader>tp :tprevious<CR>
 
-" #############YouCompleteMe#######
+" YouCompleteme
+" begin{{{--------------------------------------------------------------------------------------------
 let g:ycm_server_use_vim_stdout = 1
 let g:ycm_confirm_extra_conf = 0
 "let g:ycm_server_log_level = 'debug'
-
 "let g:ycm_extra_conf_globlist = ['~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py']
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 let g:ycm_warning_symbol = '>>'
@@ -244,7 +271,8 @@ let g:ycm_error_symbol = '*>'
 nnoremap <leader>jd :vsp <CR>:exec("YcmCompleter GoTo ")<CR>
 nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
 " <lead> d can display diags
-" ##############################################################
+" end-------------------------------------------------------------------------------------}}}
+
 " open ctag in tab/vertical split
 map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 map <leader><C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
