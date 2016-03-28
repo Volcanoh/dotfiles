@@ -7,4 +7,4 @@
 ## tmux
 
 ## install
-### make sure there is no dotfile in your home directory.
+#### make sure there is no dotfile in your home directory.
