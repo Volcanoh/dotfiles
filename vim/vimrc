@@ -68,24 +68,27 @@ nnoremap <leader>rs :source ~/.vimrc<CR>
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
+
 Plugin 'tpope/vim-repeat' "use . to repeat plugin command
 Plugin 'tpope/vim-surround' "ysiw]
 Plugin 'tpope/vim-commentary' "a motion to comment [gc]
 Plugin 'tpose/vim-git' "for git
 Plugin 'tpose/vim-fugitive' "for git
+Plugin 'thinca/vim-quickrun'
+Plugin 'tyru/open-browser.vim'
+Plugin 'plasticboy/vim-markdown'
 Plugin 'DoxygenToolkit.vim'
 Plugin 'Raimondi/delimitMate' "auto add {} [] () and so on
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'vim-scripts/fcitx.vim'
 Plugin 'drmingdrmer/xptemplate'
 Plugin  'scrooloose/syntastic' "show the error or warning of syntastic
 Plugin 'ervandew/supertab'
-"Plugin 'MarcWeber/vim-addon-mw-utils'
-"Plugin 'tomtom/tlib_vim'
-"Plugin 'garbas/vim-snipmate'
-"Plugin 'sirver/ultisnips'
-"Plugin 'honza/vim-snippets'
 Plugin 'vimwiki/vimwiki'
-
+Plugin 'gabrielelana/awesome-terminal-fonts'
+Plugin 'vim-airline/vim-airline' "status and tabline 
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'Zuckonit/vim-airline-tomato'
 Plugin 'vim-scripts/CmdlineCompl.vim'
 Plugin 'L9'
 Plugin 'FuzzyFinder'
@@ -105,18 +108,62 @@ Plugin 'vim-scripts/indexer.tar.gz'
 Plugin 'vim-latex/vim-latex' " latex
 call vundle#end()
 
+
+" airline powerline
+" begin{{{-------------------------------------------------------------
+let g:airline_poweline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+"set guifont=PowerlineSymbols\ for\ Powerline
+"set nocompatible
+"set laststatus=2
+"set t_Co=256
+"let g:Powerline_symbols = 'fancy'
+"let Powerline_symbols='compatible'
+" end---------------------------------------------------------------}}}
+
+
+"tomato 
+"begin{{{----------------------------------------------------
+let g:tomato#show_clock = 1
+let g:tomato#show_count_down = 1
+let g:tomato#remind = " \uf003 "
+let g:tomato#restinfo = " \uf003 "
+"end-----------------------------------------------------}}}
+"
 " xptenplate 
 " begin{{{-------------------------------------------------------------------------------
+" Prevent supertab from mapping <tab> to anything.
+let g:SuperTabMappingForward = '<Plug>xpt_void'
+
+" Tell XPTemplate what to fall back to, if nothing matches.
+" Original SuperTab() yields nothing if g:SuperTabMappingForward was set to
+" something it does not know.
+let g:xptemplate_fallback = '<C-r>=XPTwrapSuperTab("n")<CR>'
+
+fun! XPTwrapSuperTab(command) "{{{
+    let v = SuperTab(a:command)
+    if v == ''
+        " Change \<Tab> to whatever you want, when neither XPTemplate or
+        " supertab needs to do anything.
+        return "\<Tab>"
+    else
+        return v
+    end
+endfunction "}}}
 let g:xptemplate_minimal_prefix = 0
+let g:xptemplate_key = '<space><space>'
+let g:xptemplate_vars = "BRfun= "
+let g:xptemplate_vars = "SPcmd=&BRloop=\n"
+let g:xptemplate_vars = '$author=volcanoh &$email=huang.volcano@gmail.com'
 " end---------------------------------------------------------------------}}}
-"ultisnips
-" begin{{{--------------------------------------------------------------------------------
-let g:UltiSnipsExpandTrigger="<C-w>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-" If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
-" end--------------------------------------------------------------------------------}}}
+""ultisnips
+"" begin{{{--------------------------------------------------------------------------------
+"let g:UltiSnipsExpandTrigger="<C-w>"
+"let g:UltiSnipsJumpForwardTrigger="<c-b>"
+"let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+"" If you want :UltiSnipsEdit to split your window.
+"let g:UltiSnipsEditSplit="vertical"
+"" end--------------------------------------------------------------------------------}}}
 
 
 "" Calendar-vim
@@ -198,7 +245,8 @@ nnoremap <leader>9  :FufTaggedFile<CR>
 " delimitMate mappings
 " begin{{{---------------------------------------------------------------------------
 let delimitMate_matchpairs = "(:),[:],{:},<:>"
-"au FileType cpp let b:delimitMate_matchpairs = "(:),[:],{:}"
+au FileType cpp let b:delimitMate_matchpairs = "(:),[:],{:}"
+au FileType vimrc b:delimitMate_matchpairs = "(:),[:],{:}"
 " end ----------------------------------------------------------------------------------}}}
 
 " config syntastic 
@@ -269,7 +317,7 @@ let g:ycm_warning_symbol = '>>'
 let g:ycm_error_symbol = '*>'
 "nnoremap <leader>jd :tab split<CR>:exec("YcmCompleter GoTo ")<CR>
 nnoremap <leader>jd :vsp <CR>:exec("YcmCompleter GoTo ")<CR>
-nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
+"nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
 " <lead> d can display diags
 " end-------------------------------------------------------------------------------------}}}
 
@@ -279,3 +327,23 @@ map <leader><C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 " open ctag in tab/vertical split
 map <leader><C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 map <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+
+au BufRead,BufNewFile {*.md,*.mkd,*.markdown}  set ft=markdown
+
+"Quickrun
+" begin{{{---------------------------------------------
+map <F5> :QuickRun<CR>
+let g:quickrun_config = {}
+let g:quickrun_config.html = {'command':'gnome-open'}
+let g:quickrun_config.tex  = {'command':'pdflatex'}
+let g:quickrun_config.markdown = {
+  \ 'type': 'markdown/pandoc',
+  \ 'cmdopt': '-s',
+  \ 'outputter': 'browser'
+  \ }
+let g:quickrun_config.cpp = {
+\   'command': 'g++',
+\   'cmdopt': '-std=c++11'
+\ }
+" end--------------------------------------}}}
+
