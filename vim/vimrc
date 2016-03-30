@@ -2,18 +2,15 @@ let mapleader=";"
 filetype on
 filetype plugin on 
 noremap <Leader>b ^
-
 noremap<Leader>e $
 noremap<Leader>a A
-imap <C-f> <right>
-imap <C-b> <left>
+imap <C-h> <left>
+imap <C-l> <right>
 " 共享复制、粘贴
 noremap <Leader>y "+y
 noremap <Leader>p "+p
 
-" 关闭当前窗口
 nmap <Leader>q :q<CR>
-" 定义保存当前窗口
 nmap <Leader>w :w<CR>
 
 noremap <Up> <Nop>
@@ -24,19 +21,17 @@ noremap n nzz
 noremap N Nzz
 noremap j gjzz
 noremap k gkzz
-" 定义快捷建在结对之间跳转，助记pair
+" pair
 nmap <Leader>pa %
 " 设置实时搜索功能
 set incsearch
 " 设置自身命令行补全
 set wildmenu
-" 开启兼容模式
 set nocompatible
 " 总是显示状态栏
 set laststatus=2
 " 显示光标当前位置
 set ruler
-" 开启行号显示
 set number
 " 高亮显示当前行/列
 set cursorline
@@ -53,7 +48,6 @@ set expandtab
 filetype indent on
 set incsearch
 set hlsearch
-"remember zM-->fold all  zR -->unfold all  za -->fold/ unfold
 set foldmethod=indent 
 imap jk <Esc>
 vmap jk <Esc>
@@ -61,14 +55,12 @@ vmap jk <Esc>
 fun! ToggleFullscreen()
     call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")
 endf
-" 全屏开/关快捷键
 map <silent> <F11> :call ToggleFullscreen()<CR>
 
 nnoremap <leader>rs :source ~/.vimrc<CR>
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
-
 Plugin 'tpope/vim-repeat' "use . to repeat plugin command
 Plugin 'tpope/vim-surround' "ysiw]
 Plugin 'tpope/vim-commentary' "a motion to comment [gc]
@@ -80,6 +72,7 @@ Plugin 'plasticboy/vim-markdown'
 Plugin 'DoxygenToolkit.vim'
 Plugin 'Raimondi/delimitMate' "auto add {} [] () and so on
 Plugin 'Valloric/YouCompleteMe'
+"Plugin 'oblitum/YouCompleteMe/tree/clang_complete-params'
 Plugin 'vim-scripts/fcitx.vim'
 Plugin 'drmingdrmer/xptemplate'
 Plugin  'scrooloose/syntastic' "show the error or warning of syntastic
@@ -116,7 +109,6 @@ let g:airline#extensions#tabline#enabled = 1
 "set guifont=PowerlineSymbols\ for\ Powerline
 "set nocompatible
 "set laststatus=2
-"set t_Co=256
 "let g:Powerline_symbols = 'fancy'
 "let Powerline_symbols='compatible'
 " end---------------------------------------------------------------}}}
