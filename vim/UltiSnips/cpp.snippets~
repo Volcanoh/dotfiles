@@ -1,0 +1,12 @@
+snippet {}
+{
+    ${1}
+}
+endsnippet
+
+snippet for
+for( ${int} ${i} = ${0})
+endsnippet
+snippet todo "this is a todo" b
+// TODO `echo $USER` ${1:what is it?} (`!v strftime("%c")`)
+endsnippet

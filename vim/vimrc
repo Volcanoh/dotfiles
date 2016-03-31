@@ -64,18 +64,16 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-repeat' "use . to repeat plugin command
 Plugin 'tpope/vim-surround' "ysiw]
 Plugin 'tpope/vim-commentary' "a motion to comment [gc]
-Plugin 'tpose/vim-git' "for git
-Plugin 'tpose/vim-fugitive' "for git
 Plugin 'thinca/vim-quickrun'
 Plugin 'tyru/open-browser.vim'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'DoxygenToolkit.vim'
 Plugin 'Raimondi/delimitMate' "auto add {} [] () and so on
 Plugin 'Valloric/YouCompleteMe'
-"Plugin 'oblitum/YouCompleteMe/tree/clang_complete-params'
-Plugin 'vim-scripts/fcitx.vim'
-Plugin 'drmingdrmer/xptemplate'
-Plugin  'scrooloose/syntastic' "show the error or warning of syntastic
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+"Plugin 'MarcWeber/vim-addon-manager'
+"Plugin 'drmingdrmer/xptemplate' " have the same useage as ultisnips
 Plugin 'ervandew/supertab'
 Plugin 'vimwiki/vimwiki'
 Plugin 'gabrielelana/awesome-terminal-fonts'
@@ -83,8 +81,6 @@ Plugin 'vim-airline/vim-airline' "status and tabline
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'Zuckonit/vim-airline-tomato'
 Plugin 'vim-scripts/CmdlineCompl.vim'
-Plugin 'L9'
-Plugin 'FuzzyFinder'
 Plugin 'kien/ctrlp.vim'
 Plugin 'itchyny/calendar.vim'
 Plugin 'altercation/vim-colors-solarized'
@@ -121,51 +117,24 @@ let g:tomato#show_count_down = 1
 let g:tomato#remind = " \uf003 "
 let g:tomato#restinfo = " \uf003 "
 "end-----------------------------------------------------}}}
-"
-" xptenplate 
-" begin{{{-------------------------------------------------------------------------------
-" Prevent supertab from mapping <tab> to anything.
-let g:SuperTabMappingForward = '<Plug>xpt_void'
 
-" Tell XPTemplate what to fall back to, if nothing matches.
-" Original SuperTab() yields nothing if g:SuperTabMappingForward was set to
-" something it does not know.
-let g:xptemplate_fallback = '<C-r>=XPTwrapSuperTab("n")<CR>'
-
-fun! XPTwrapSuperTab(command) "{{{
-    let v = SuperTab(a:command)
-    if v == ''
-        " Change \<Tab> to whatever you want, when neither XPTemplate or
-        " supertab needs to do anything.
-        return "\<Tab>"
-    else
-        return v
-    end
-endfunction "}}}
-let g:xptemplate_minimal_prefix = 0
-let g:xptemplate_key = '<space><space>'
-let g:xptemplate_vars = "BRfun= "
-let g:xptemplate_vars = "SPcmd=&BRloop=\n"
-let g:xptemplate_vars = '$author=volcanoh &$email=huang.volcano@gmail.com'
-" end---------------------------------------------------------------------}}}
-""ultisnips
-"" begin{{{--------------------------------------------------------------------------------
-"let g:UltiSnipsExpandTrigger="<C-w>"
-"let g:UltiSnipsJumpForwardTrigger="<c-b>"
-"let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-"" If you want :UltiSnipsEdit to split your window.
-"let g:UltiSnipsEditSplit="vertical"
-"" end--------------------------------------------------------------------------------}}}
+"ultisnips complete 
+" begin{{{--------------------------------------------------------------------------------
+let g:SuperTabDefaultCompletionType    = '<C-n>'
+let g:SuperTabCrMapping                = 0
+let g:UltiSnipsExpandTrigger           = '<tab>'
+let g:UltiSnipsJumpForwardTrigger      = '<tab>'
+let g:UltiSnipsJumpBackwardTrigger     = '<s-tab>'
+let g:ycm_key_list_select_completion   = ['<C-j>', '<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-k>', '<C-p>', '<Up>']
+let g:UltiSnipsEditSplit="vertical"
+"ActivateAddons vim-snippets UltiSnips
+" end--------------------------------------------------------------------------------}}}
 
 
 "" Calendar-vim
 "" begin {{{---------------------------------------------------------------------------
 let g:calendar_time_zone = "+0000"
-"let g:calendar_list = [
-    "\   {'name': 'Tasks', 'path': '~/KuaiPan/tasks', 'ext': 'task'},
-    "\   {'name': 'Diary', 'path': '~/KuaiPan/diary', 'ext': 'diary'},
-"\ ]
-"let g:calendar_current_idx = 1
 "" end----------------------------------------------------------------------------------}}}
 
 " Doxygen
@@ -181,7 +150,7 @@ let g:DoxygenToolkit_throwTag_pre = "\\throw " " @exception is also valid
 let g:DoxygenToolkit_fileTag = "\\file "
 let g:DoxygenToolkit_dateTag = "\\date "
 let g:DoxygenToolkit_authorTag = "\\author "
-"let g:DoxygenToolkit_versionTag = "\\version "
+let g:DoxygenToolkit_versionTag = "\\version "
 let g:DoxygenToolkit_blockTag = "\\name "
 let g:DoxygenToolkit_classTag = "\\class "
 let g:DoxygenToolkit_authorName = "volcanoh <huang.volcano@gmail.com>"
@@ -196,7 +165,7 @@ let g:DoxygenToolKit_interCommentBlock = "/// "
 map <leader>dd :Dox<CR>
 map <leader>da :DoxAuthor<CR>
 map <leader>dl :DoxLic<cr>
-"let g:load_doxygen_syntax = 1
+let g:load_doxygen_syntax = 1
 " end----------------------------------------------------------------------------------}}}
 
 " Calendar
@@ -215,25 +184,6 @@ inoremap <leader>gc <Esc><leader>gc
 inoremap <leader>gs <Esc><leader>gs
 " end----------------------------------------------------------------------------------}}}
 
-" FuF customisations 
-" begin"{{{---------------------------------------------------------------------------
-let g:fuf_modesDisable = []
-nnoremap <leader>h :FufHelp<CR>
-nnoremap <leader>1  :FufTagWithCursorWord<CR>
-nnoremap <leader>11 :FufTag<CR>
-nnoremap <leader>2  :FufFileWithCurrentBufferDir<CR>
-nnoremap <leader>22 :FufFile<CR>
-nnoremap <leader>3  :FufBuffer<CR>
-nnoremap <leader>4  :FufDirWithCurrentBufferDir<CR>
-nnoremap <leader>44 :FufDir<CR>
-nnoremap <leader>5  :FufBufferTag<CR>
-nnoremap <leader>55 :FufBufferTagAll<CR>
-nnoremap <leader>6  :FufMruFile<CR>
-nnoremap <leader>7  :FufLine<CR>
-nnoremap <leader>8  :FufChangeList<CR>
-nnoremap <leader>9  :FufTaggedFile<CR>
-" end----------------------------------------------------------------------------------}}}
-
 " delimitMate mappings
 " begin{{{---------------------------------------------------------------------------
 let delimitMate_matchpairs = "(:),[:],{:},<:>"
@@ -241,22 +191,22 @@ au FileType cpp let b:delimitMate_matchpairs = "(:),[:],{:}"
 au FileType vimrc b:delimitMate_matchpairs = "(:),[:],{:}"
 " end ----------------------------------------------------------------------------------}}}
 
-" config syntastic 
-" befin{{{---------------------------------------------------------------------------
-let g:syntastic_check_on_open=1
-let g:syntastic_cpp_include_dirs = ['/usr/include/']
-let g:syntastic_cpp_remove_include_errors = 1
-let g:syntastic_cpp_check_header = 1
-let g:syntastic_cpp_compiler = 'clang++'
-let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libstdc++'
-"set error or warning signs
-let g:syntastic_error_symbol = '✗'
-let g:syntastic_warning_symbol = '⚠'
-"whether to show balloons
-let g:syntastic_enable_balloons = 1
-" end----------------------------------------------------------------------------------}}}
+"" config syntastic 
+"" befin{{{---------------------------------------------------------------------------
+"let g:syntastic_check_on_open=1
+"let g:syntastic_cpp_include_dirs = ['/usr/include/']
+"let g:syntastic_cpp_remove_include_errors = 1
+"let g:syntastic_cpp_check_header = 1
+"let g:syntastic_cpp_compiler = 'clang++'
+"let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libstdc++'
+""set error or warning signs
+"let g:syntastic_error_symbol = '✗'
+"let g:syntastic_warning_symbol = '⚠'
+""whether to show balloons
+"let g:syntastic_enable_balloons = 1
+"" end----------------------------------------------------------------------------------}}}
 
-"mappings for latex-box plugin
+" mappings for latex-box plugin
 " begin{{{---------------------------------------------------------------------------
 map <silent> <Leader>ls :silent !/Applications/Skim.app/Contents/SharedSupport/displayline
             \ <C-R>=line('.')<CR> "<C-R>=LatexBox_GetOutputFile()<CR>" "%:p" <CR>
@@ -305,12 +255,12 @@ let g:ycm_confirm_extra_conf = 0
 "let g:ycm_server_log_level = 'debug'
 "let g:ycm_extra_conf_globlist = ['~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py']
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
-let g:ycm_warning_symbol = '>>'
-let g:ycm_error_symbol = '*>'
+let g:ycm_warning_symbol = '⚠'
+let g:ycm_error_symbol = '✗'
 "nnoremap <leader>jd :tab split<CR>:exec("YcmCompleter GoTo ")<CR>
+let g:ycm_key_list_select_completion=[] "// 不使用tab
+let g:ycm_key_list_previous_completion=[]
 nnoremap <leader>jd :vsp <CR>:exec("YcmCompleter GoTo ")<CR>
-"nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
-" <lead> d can display diags
 " end-------------------------------------------------------------------------------------}}}
 
 " open ctag in tab/vertical split
