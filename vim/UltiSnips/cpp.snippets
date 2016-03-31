@@ -1,6 +1,10 @@
 ###########################################################################
 #                            C++ Snippets                                 #
 ###########################################################################
+
+snippet include "#include <>"
+#include <${1}>
+endsnippet
 snippet beginend "$1.begin(), $1.end() (beginend)"
 ${1:v}${1/^.*?(-)?(>)?$/(?2::(?1:>:.))/}begin(), $1${1/^.*?(-)?(>)?$/(?2::(?1:>:.))/}end()
 endsnippet
@@ -55,4 +59,8 @@ endsnippet
 
 snippet todo "this is a todo" b
 // TODO `echo $USER` ${1:what is it?} (`!v strftime("%c")`)
+endsnippet
+
+snippet cout "std::cout"
+std::cout << "${1:}" << std<<endl;
 endsnippet
