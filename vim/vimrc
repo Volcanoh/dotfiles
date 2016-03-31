@@ -1,18 +1,18 @@
 let mapleader=";"
-filetype on
+filetype off
 filetype plugin on 
+syntax on
+syntax enable
+
 noremap <Leader>b ^
 noremap<Leader>e $
 noremap<Leader>a A
 imap <C-h> <left>
 imap <C-l> <right>
-" 共享复制、粘贴
 noremap <Leader>y "+y
 noremap <Leader>p "+p
-
 nmap <Leader>q :q<CR>
 nmap <Leader>w :w<CR>
-
 noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Left> <Nop>
@@ -29,9 +29,9 @@ set incsearch
 set wildmenu
 set nocompatible
 " 总是显示状态栏
-set laststatus=2
+"set laststatus=2
 " 显示光标当前位置
-set ruler
+"set ruler
 set number
 " 高亮显示当前行/列
 set cursorline
@@ -39,8 +39,6 @@ set cursorcolumn
 " 禁止光标闪烁
 set gcr=a:block-blinkon0
 set mouse-=a
-syntax on
-syntax enable
 set number
 set tabstop=4
 set shiftwidth=4
@@ -48,7 +46,8 @@ set expandtab
 filetype indent on
 set incsearch
 set hlsearch
-set foldmethod=indent 
+"set foldmethod=indent 
+"set foldmethod=syntax 
 imap jk <Esc>
 vmap jk <Esc>
 " 将外部命令 wmctrl 控制窗口最大化的命令行参数封装成一个 vim 的函数
@@ -57,7 +56,75 @@ fun! ToggleFullscreen()
 endf
 map <silent> <F11> :call ToggleFullscreen()<CR>
 
+" Visual "{{{
+syntax on                      " enable syntax
+
+" set synmaxcol=250              " limit syntax highlighting to 128 columns
+
+set mouse=a "enable mouse in GUI mode
+set mousehide                 " Hide mouse after chars typed
+
+set nonumber                  " line numbers Off
+set showmatch                 " Show matching brackets.
+set matchtime=2               " Bracket blinking.
+
+set wildmode=longest,list     " At command line, complete longest common string, then list alternatives.
+
+set completeopt-=preview      " disable auto opening preview window
+
+set novisualbell              " No blinking
+set noerrorbells              " No noise.
+set vb t_vb=                  " disable any beeps or flashes on error
+
+set laststatus=2              " always show status line.
+set shortmess=atI             " shortens messages
+set showcmd                   " display an incomplete command in statusline
+
+set statusline=%<%f\          " custom statusline
+set stl+=[%{&ff}]             " show fileformat
+set stl+=%y%m%r%=
+set stl+=%-14.(%l,%c%V%)\ %P
+
+
+set foldenable                " Turn on folding
+set foldmethod=marker         " Fold on the marker
+set foldlevel=100             " Don't autofold anything (but I can still fold manually)
+
+set foldopen=block,hor,tag    " what movements open folds
+set foldopen+=percent,mark
+set foldopen+=quickfix
+
+set virtualedit=block
+
+set splitbelow
+set splitright
+
+set list                      " display unprintable characters f12 - switches
+set listchars=tab:\ ·,eol:¬
+set listchars+=trail:·
+set listchars+=extends:»,precedes:«
+map <silent> <F12> :set invlist<CR>
+"}}}
+" open help in vertical split
+" au BufWinEnter {*.txt} if 'help' == &ft | wincmd H | nmap q :q<CR> | endif
+" " }}}
 nnoremap <leader>rs :source ~/.vimrc<CR>
+nnoremap <leader>rt :tabnew ~/.vim/vimrc<CR>
+"nnoremap <leader>re :e ~/.vim/vimrc<CR>
+"nnoremap <leader>rd :e ~/.vim/ <CR>
+nnoremap <leader>rc :silent ! cd ~/.vim/ && git commit ~/.vim/vimrc -v <CR>
+
+" AutoCommands " {{{
+au BufRead,BufNewFile {*.go}                                          setl ft=go tabstop=2 softtabstop=2 noexpandtab smarttab
+au BufRead,BufNewFile {*.coffee}                                      setl ft=coffee tabstop=2 softtabstop=2 expandtab smarttab
+au BufRead,BufNewFile {Gemfile,Rakefile,*.rake,config.ru,*.rabl}      setl ft=ruby tabstop=2 softtabstop=2 shiftwidth=2 expandtab smarttab
+au BufRead,BufNewFile {*.local}                                       setl ft=sh
+au BufRead,BufNewFile {*.md,*.mkd,*.markdown}                         setl ft=markdown
+au BufRead,BufNewFile {*.scala}                                       setl ft=scala
+au! BufReadPost       {COMMIT_EDITMSG,*/COMMIT_EDITMSG}               exec 'setl ft=gitcommit noml list spell' | norm 1G
+au! BufWritePost      {*.snippet,*.snippets}                          call ReloadAllSnippets()
+
+
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
@@ -288,4 +355,5 @@ let g:quickrun_config.cpp = {
 \   'cmdopt': '-std=c++11'
 \ }
 " end--------------------------------------}}}
+
 
