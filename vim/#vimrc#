@@ -129,8 +129,8 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-repeat' "use . to repeat plugin command
-Plugin 'tpope/vim-surround' "ysiw]
-Plugin 'tpope/vim-commentary' "a motion to comment [gc]
+Plugin 'tpope/vim-surround' "ysiw]b
+bPlugin 'tpope/vim-commentary' "a motion to comment [gc]
 Plugin 'thinca/vim-quickrun'
 Plugin 'tyru/open-browser.vim'
 Plugin 'plasticboy/vim-markdown'
