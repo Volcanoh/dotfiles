@@ -134,6 +134,7 @@ nnoremap <leader>rt :tabnew ~/.vim/vimrc<CR>
 nnoremap <leader>re :e ~/.vim/vimrc<CR>
 nnoremap <leader>rd :e ~/.vim/ <CR>
 nnoremap <leader>rc :silent ! cd ~/.dotfiles/ && git commit ~/.dotfiles/vim/vimrc -v <CR>
+nnoremap <leader>rp :silent ! cd ~/.dotfiles/ && git push <CR>
 
 " AutoCommands " {{{
 au BufRead,BufNewFile {*.go}                                          setl ft=go tabstop=2 softtabstop=2 noexpandtab smarttab
