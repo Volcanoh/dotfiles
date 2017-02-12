@@ -8,8 +8,8 @@ Change directory to home `cd ~`
 ### vim
 `ln -sf ~/.dotfiles/vim ~/.vim && ln -sf ~/.dotfiles/vim/vimrc ~/.vimrc`    
 `git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim `  
-Launch vim and run `:PluginInstall`   
 Install ctags `sudo apt-get install ctags`    
+Launch vim and run `:PluginInstall`   
 Download and compile ycmd `cd ~/.vim/bundle/YouCompleteMe && ./install.py --clang-completer`    
 
 ### tmux 
