@@ -1,12 +1,21 @@
 # dotfiles
 ----------
+Quick install and comfigrate vim and tmux
+## install.sh
+```
 
-## vim
-leader ;
+#!/bin/sh
 
-## zsh
+mv dotfiles ~/.dotfiles
 
-## tmux
+#vim
+ln -sf ~/.dotfiles/vim ~/.vim
+ln -sf ~/.dotfiles/vim/vimrc ~/.vimrc
+git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+cd ~/.vim/bundle/YouCompleteMe
+./install.sh --clang-completer
 
-## install
-make sure there is no dotfile in your home directory.
+#tmux 
+ln -sf ~/.dotfiles/tmux.conf ~/.tmux.conf
+
+```
