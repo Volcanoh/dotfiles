@@ -80,10 +80,16 @@ noremap <Left> <Nop>
 noremap <Right> <Nop>
 "swift tab
 noremap <C-t>n :tabnew<CR>
-noremap <C-t>p :tabnext<CR>
+noremap <C-t>l :tabnext<CR>
 noremap <C-t>h :tabprevious<CR>
-" pair
-nmap <Leader>pa %
+noremap <C-t>c :tabclose<CR>
+" split windows hot key
+" <C-w>s  horizontal spliting
+" <C-w>v  vertical spliting
+" <C-w>q  close one 
+" <C-w><C-w> switch between windows
+" <C-w>j(Or h, k, l) switch to adjacent window
+
 imap fd <Esc>
 vmap fd <Esc>
 " Visual "{{{
@@ -169,17 +175,17 @@ let g:UltiSnipsEditSplit="vertical"
 let g:DoxygenToolkit_briefTag_funcName = "yes"
 " for C++ style, change the '@' to '\'
 let g:DoxygenToolkit_commentType = "C++"
-let g:DoxygenToolkit_briefTag_pre = "\\brief "
-let g:DoxygenToolkit_templateParamTag_pre = "\\tparam "
-let g:DoxygenToolkit_paramTag_pre = "\\param "
-let g:DoxygenToolkit_returnTag = "\\return "
-let g:DoxygenToolkit_throwTag_pre = "\\throw " " @exception is also valid
-let g:DoxygenToolkit_fileTag = "\\file "
-let g:DoxygenToolkit_dateTag = "\\date "
-let g:DoxygenToolkit_authorTag = "\\author "
-let g:DoxygenToolkit_versionTag = "\\version "
-let g:DoxygenToolkit_blockTag = "\\name "
-let g:DoxygenToolkit_classTag = "\\class "
+let g:DoxygenToolkit_briefTag_pre = "@brief "
+let g:DoxygenToolkit_templateParamTag_pre = "@tparam "
+let g:DoxygenToolkit_paramTag_pre = "@param "
+let g:DoxygenToolkit_returnTag = "@return "
+let g:DoxygenToolkit_throwTag_pre = "@throw " " @exception is also valid
+let g:DoxygenToolkit_fileTag = "@file "
+let g:DoxygenToolkit_dateTag = "@date "
+let g:DoxygenToolkit_authorTag = "@author "
+let g:DoxygenToolkit_versionTag = "@version "
+let g:DoxygenToolkit_blockTag = "@name "
+let g:DoxygenToolkit_classTag = "@class "
 let g:DoxygenToolkit_authorName = "volcanoh <huang.volcano@gmail.com>"
 let g:DoxygenToolkit_blockHeader="--------------------------------------------------------------"
 let g:DoxygenToolkit_blockFooter="--------------------------------------------------------------"
@@ -188,6 +194,7 @@ let g:doxygen_enhanced_color = 1
 " C++ style
 let g:DoxygenToolKit_startCommentBlock = "/// "
 let g:DoxygenToolKit_interCommentBlock = "/// "
+
 "creat doxgen comment
 map <leader>dd :Dox<CR>
 map <leader>da :DoxAuthor<CR>
@@ -252,7 +259,7 @@ let g:ycm_confirm_extra_conf = 0
 "let g:ycm_server_log_level = 'debug'
 "let g:ycm_extra_conf_globlist = ['~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py']
 "let g:ycm_global_ycm_extra_conf = '~/.vim/bundlesYouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
-let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf = '~/.dotfiles/vim/ycm_extra_conf.py'
 let g:ycm_warning_symbol = '⚠'
 let g:ycm_error_symbol = '✗'
 let g:ycm_key_list_select_completion=[] "// 不使用tab
