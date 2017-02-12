@@ -1,6 +1,6 @@
 # dotfiles
 ----------
-Quick install and comfigure vim and tmux
+Quick install and configure vim and tmux
 
 ## Install
 Change directory to home `cd ~`   
