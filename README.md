@@ -16,5 +16,5 @@ Download and compile ycmd `cd ~/.vim/bundle/YouCompleteMe && ./install.py --clan
 `ln -sf ~/.dotfiles/tmux.conf ~/.tmux.conf`
 #### hot key
 `<C-h>-` split verticle
-`<C-h>|' split horizon
-`<C-h>h,j,k,l swift windows
+`<C-h>|` split horizon
+`<C-h>h,j,k,l` swift windows
