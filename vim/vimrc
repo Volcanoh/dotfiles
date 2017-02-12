@@ -146,8 +146,6 @@ au BufRead,BufNewFile {*.scala}                                       setl ft=sc
 au! BufReadPost       {COMMIT_EDITMSG,*/COMMIT_EDITMSG}               exec 'setl ft=gitcommit noml list spell' | norm 1G
 au! BufWritePost      {*.snippet,*.snippets}                          call ReloadAllSnippets()
 
-
-
 " airline powerline
 " begin{{{-------------------------------------------------------------
 let g:airline_poweline_fonts = 1
@@ -209,7 +207,6 @@ let delimitMate_matchpairs = "(:),[:],{:},<:>"
 au FileType cpp let b:delimitMate_matchpairs = "(:),[:],{:}"
 au FileType vimrc b:delimitMate_matchpairs = "(:),[:],{:}"
 " end ----------------------------------------------------------------------------------}}}
-
 
 " mappings for latex-box plugin
 " begin{{{---------------------------------------------------------------------------
@@ -293,5 +290,3 @@ let g:quickrun_config.cpp = {
 \   'cmdopt': '-std=c++11'
 \ }
 " end--------------------------------------}}}
-
-
