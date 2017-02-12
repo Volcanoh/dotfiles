@@ -3,126 +3,28 @@ filetype off
 filetype plugin on 
 syntax on
 syntax enable
-
-noremap <Leader>b ^
-noremap<Leader>e $
-noremap<Leader>a A
-imap <C-h> <left>
-imap <C-l> <right>
-noremap <Leader>y "+y
-noremap <Leader>p "+p
-nmap <Leader>q :q<CR>
-nmap <Leader>w :w<CR>
-noremap <Up> <Nop>
-noremap <Down> <Nop>
-noremap <Left> <Nop>
-noremap <Right> <Nop>
-noremap n nzz
-noremap N Nzz
-noremap j gjzz
-noremap k gkzz
-" pair
-nmap <Leader>pa %
-" 设置实时搜索功能
-set incsearch
-" 设置自身命令行补全
-set wildmenu
+set incsearch " 设置实时搜索功能
+set wildmenu " 设置自身命令行补全
 set nocompatible
-" 总是显示状态栏
-"set laststatus=2
-" 显示光标当前位置
-"set ruler
+set ruler " 显示光标当前位置
 set number
-" 高亮显示当前行/列
-set cursorline
-set cursorcolumn
-" 禁止光标闪烁
-set gcr=a:block-blinkon0
+set cursorline " 高亮显示当前行
+set cursorcolumn " 高亮显示当前列
+set gcr=a:block-blinkon0 " 禁止光标闪烁
 set mouse-=a
-set number
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 set expandtab
 filetype indent on
 set incsearch
 set hlsearch
 set foldmethod=indent 
-"set foldmethod=syntax 
-imap fd <Esc>
-vmap fd <Esc>
-" 将外部命令 wmctrl 控制窗口最大化的命令行参数封装成一个 vim 的函数
-fun! ToggleFullscreen()
-    call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")
-endf
-map <silent> <F11> :call ToggleFullscreen()<CR>
-
-" Visual "{{{
-syntax on                      " enable syntax
-
-" set synmaxcol=250              " limit syntax highlighting to 128 columns
-
-set mouse=a "enable mouse in GUI mode
-set mousehide                 " Hide mouse after chars typed
-
-set nonumber                  " line numbers Off
-set showmatch                 " Show matching brackets.
-set matchtime=2               " Bracket blinking.
-
-set wildmode=longest,list     " At command line, complete longest common string, then list alternatives.
-
-set completeopt-=preview      " disable auto opening preview window
-
-set novisualbell              " No blinking
-set noerrorbells              " No noise.
-set vb t_vb=                  " disable any beeps or flashes on error
-
-set laststatus=2              " always show status line.
-set shortmess=atI             " shortens messages
-set showcmd                   " display an incomplete command in statusline
-
-set statusline=%<%f\          " custom statusline
-set stl+=[%{&ff}]             " show fileformat
-set stl+=%y%m%r%=
-set stl+=%-14.(%l,%c%V%)\ %P
-
-
-set foldenable                " Turn on folding
-"set foldmethod=marker         " Fold on the marker
-set foldlevel=100             " Don't autofold anything (but I can still fold manually)
-
-set foldopen=block,hor,tag    " what movements open folds
-set foldopen+=percent,mark
-set foldopen+=quickfix
-
-set virtualedit=block
-
-set splitbelow
-set splitright
-
-set list                      " display unprintable characters f12 - switches
-set listchars=tab:\ ·,eol:¬
-set listchars+=trail:·
-set listchars+=extends:»,precedes:«
-map <silent> <F12> :set invlist<CR>
-"}}}
-" open help in vertical split
-" au BufWinEnter {*.txt} if 'help' == &ft | wincmd H | nmap q :q<CR> | endif
-" " }}}
-nnoremap <leader>rs :source ~/.vimrc<CR>
-nnoremap <leader>rt :tabnew ~/.vim/vimrc<CR>
-"nnoremap <leader>re :e ~/.vim/vimrc<CR>
-"nnoremap <leader>rd :e ~/.vim/ <CR>
-nnoremap <leader>rc :silent ! cd ~/.vim/ && git commit ~/.vim/vimrc -v <CR>
-
-" AutoCommands " {{{
-au BufRead,BufNewFile {*.go}                                          setl ft=go tabstop=2 softtabstop=2 noexpandtab smarttab
-au BufRead,BufNewFile {*.coffee}                                      setl ft=coffee tabstop=2 softtabstop=2 expandtab smarttab
-au BufRead,BufNewFile {Gemfile,Rakefile,*.rake,config.ru,*.rabl}      setl ft=ruby tabstop=2 softtabstop=2 shiftwidth=2 expandtab smarttab
-au BufRead,BufNewFile {*.local}                                       setl ft=sh
-au BufRead,BufNewFile {*.md,*.mkd,*.markdown}                         setl ft=markdown
-au BufRead,BufNewFile {*.scala}                                       setl ft=scala
-au! BufReadPost       {COMMIT_EDITMSG,*/COMMIT_EDITMSG}               exec 'setl ft=gitcommit noml list spell' | norm 1G
-au! BufWritePost      {*.snippet,*.snippets}                          call ReloadAllSnippets()
+set relativenumber number " 相对行号
+au FocusLost * :set norelativenumber number
+au FocusGained * :set relativenumber
+" 插入模式下用绝对行号, 普通模式下用相对
+autocmd InsertEnter * :set norelativenumber number
+autocmd InsertLeave * :set relativenumber
 
 
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -130,8 +32,9 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-repeat' "use . to repeat plugin command
 Plugin 'tpope/vim-surround' "ysiw]
-Plugin 'tpope/vim-commentary' "a motion to comment [gc]
-Plugin 'thinca/vim-quickrun'
+Plugin 'kien/ctrlp.vim' "<C-p> to find file
+" Plugin 'tpope/vim-commentary' "a motion to comment [gc]
+" Plugin 'thinca/vim-quickrun'
 Plugin 'tyru/open-browser.vim'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'DoxygenToolkit.vim'
@@ -139,17 +42,12 @@ Plugin 'Raimondi/delimitMate' "auto add {} [] () and so on
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
-"Plugin 'MarcWeber/vim-addon-manager'
-"Plugin 'drmingdrmer/xptemplate' " have the same useage as ultisnips
 Plugin 'ervandew/supertab'
-Plugin 'vimwiki/vimwiki'
 Plugin 'gabrielelana/awesome-terminal-fonts'
 Plugin 'vim-airline/vim-airline' "status and tabline 
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'Zuckonit/vim-airline-tomato'
 Plugin 'vim-scripts/CmdlineCompl.vim'
-Plugin 'kien/ctrlp.vim'
-Plugin 'itchyny/calendar.vim'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'tomasr/molokai'
 Plugin 'gmarik/ingretu'
@@ -165,25 +63,93 @@ Plugin 'vim-latex/vim-latex' " latex
 call vundle#end()
 
 
+
+noremap <Leader>b ^
+noremap<Leader>e $
+noremap<Leader>a A
+imap <C-h> <left>
+imap <C-l> <right>
+noremap <Leader>y "+y
+noremap <Leader>p "+p
+nmap <Leader>q :q<CR>
+nmap <Leader>w :w<CR>
+nmap <Leader>fs :w<CR>
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+noremap <Left> <Nop>
+noremap <Right> <Nop>
+"swift tab
+noremap <C-t>n :tabnew<CR>
+noremap <C-t>p :tabnext<CR>
+noremap <C-t>h :tabprevious<CR>
+" pair
+nmap <Leader>pa %
+imap fd <Esc>
+vmap fd <Esc>
+" Visual "{{{
+syntax on                      " enable syntax
+" set synmaxcol=250              " limit syntax highlighting to 128 columns
+set mousehide                 " Hide mouse after chars typed
+set nonumber                  " line numbers Off
+set showmatch                 " Show matching brackets.
+set matchtime=2               " Bracket blinking.
+set wildmode=longest,list     " At command line, complete longest common string, then list alternatives.
+set completeopt-=preview      " disable auto opening preview window
+set novisualbell              " No blinking
+set noerrorbells              " No noise.
+set vb t_vb=                  " disable any beeps or flashes on error
+set laststatus=2              " always show status line.
+set shortmess=atI             " shortens messages
+set showcmd                   " display an incomplete command in statusline
+set statusline=%<%f\          " custom statusline
+set stl+=[%{&ff}]             " show fileformat
+set stl+=%y%m%r%=
+set stl+=%-14.(%l,%c%V%)\ %P
+set foldenable                " Turn on folding
+"set foldmethod=marker         " Fold on the marker
+set foldlevel=100             " Don't autofold anything (but I can still fold manually)
+set foldopen=block,hor,tag    " what movements open folds
+set foldopen+=percent,mark
+set foldopen+=quickfix
+set virtualedit=block
+set splitbelow
+set splitright
+set list                      " display unprintable characters f12 - switches
+set listchars=tab:\ ·,eol:¬
+set listchars+=trail:·
+set listchars+=extends:»,precedes:«
+map <silent> <F12> :set invlist<CR>
+"}}}
+" open help in vertical split
+" au BufWinEnter {*.txt} if 'help' == &ft | wincmd H | nmap q :q<CR> | endif
+" " }}}
+nnoremap <leader>rs :source ~/.vimrc<CR>
+nnoremap <leader>rt :tabnew ~/.vim/vimrc<CR>
+nnoremap <leader>re :e ~/.vim/vimrc<CR>
+nnoremap <leader>rd :e ~/.vim/ <CR>
+nnoremap <leader>rc :silent ! cd ~/.vim/ && git commit ~/.vim/vimrc -v <CR>
+
+" AutoCommands " {{{
+au BufRead,BufNewFile {*.go}                                          setl ft=go tabstop=2 softtabstop=2 noexpandtab smarttab
+au BufRead,BufNewFile {*.coffee}                                      setl ft=coffee tabstop=2 softtabstop=2 expandtab smarttab
+au BufRead,BufNewFile {Gemfile,Rakefile,*.rake,config.ru,*.rabl}      setl ft=ruby tabstop=2 softtabstop=2 shiftwidth=2 expandtab smarttab
+au BufRead,BufNewFile {*.local}                                       setl ft=sh
+au BufRead,BufNewFile {*.md,*.mkd,*.markdown}                         setl ft=markdown
+au BufRead,BufNewFile {*.scala}                                       setl ft=scala
+au! BufReadPost       {COMMIT_EDITMSG,*/COMMIT_EDITMSG}               exec 'setl ft=gitcommit noml list spell' | norm 1G
+au! BufWritePost      {*.snippet,*.snippets}                          call ReloadAllSnippets()
+
+
+
 " airline powerline
 " begin{{{-------------------------------------------------------------
 let g:airline_poweline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
-"set guifont=PowerlineSymbols\ for\ Powerline
 "set nocompatible
 "set laststatus=2
-"let g:Powerline_symbols = 'fancy'
-"let Powerline_symbols='compatible'
+let g:Powerline_symbols = 'fancy'
+let Powerline_symbols='compatible'
 " end---------------------------------------------------------------}}}
-
-
-"tomato 
-"begin{{{----------------------------------------------------
-let g:tomato#show_clock = 1
-let g:tomato#show_count_down = 1
-let g:tomato#remind = " \uf003 "
-let g:tomato#restinfo = " \uf003 "
-"end-----------------------------------------------------}}}
 
 "ultisnips complete 
 " begin{{{--------------------------------------------------------------------------------
@@ -197,12 +163,6 @@ let g:ycm_key_list_previous_completion = ['<C-k>', '<C-p>', '<Up>']
 let g:UltiSnipsEditSplit="vertical"
 "ActivateAddons vim-snippets UltiSnips
 " end--------------------------------------------------------------------------------}}}
-
-
-"" Calendar-vim
-"" begin {{{---------------------------------------------------------------------------
-let g:calendar_time_zone = "+0000"
-"" end----------------------------------------------------------------------------------}}}
 
 " Doxygen
 " begin{{{---------------------------------------------------------------------------
@@ -235,22 +195,6 @@ map <leader>dl :DoxLic<cr>
 let g:load_doxygen_syntax = 1
 " end----------------------------------------------------------------------------------}}}
 
-" Calendar
-" begin{{{---------------------------------------------------------------------------
-let g:calendar_google_calendar = 1
-let g:calendar_google_task = 1
-" end--------------------------------------------------------------}}}
-
-" git
-" begin{{{--------------------------------------------------------------------------- 
-nnoremap <leader>gw :Gwrite<CR>
-nnoremap <leader>gc :Gcommit -v<CR>
-nnoremap <leader>gs :Gstatus \| 7<CR>
-inoremap <leader>gw <Esc><leader>gw
-inoremap <leader>gc <Esc><leader>gc
-inoremap <leader>gs <Esc><leader>gs
-" end----------------------------------------------------------------------------------}}}
-
 " delimitMate mappings
 " begin{{{---------------------------------------------------------------------------
 let delimitMate_matchpairs = "(:),[:],{:},<:>"
@@ -258,20 +202,6 @@ au FileType cpp let b:delimitMate_matchpairs = "(:),[:],{:}"
 au FileType vimrc b:delimitMate_matchpairs = "(:),[:],{:}"
 " end ----------------------------------------------------------------------------------}}}
 
-"" config syntastic 
-"" befin{{{---------------------------------------------------------------------------
-"let g:syntastic_check_on_open=1
-"let g:syntastic_cpp_include_dirs = ['/usr/include/']
-"let g:syntastic_cpp_remove_include_errors = 1
-"let g:syntastic_cpp_check_header = 1
-"let g:syntastic_cpp_compiler = 'clang++'
-"let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libstdc++'
-""set error or warning signs
-"let g:syntastic_error_symbol = '✗'
-"let g:syntastic_warning_symbol = '⚠'
-""whether to show balloons
-"let g:syntastic_enable_balloons = 1
-"" end----------------------------------------------------------------------------------}}}
 
 " mappings for latex-box plugin
 " begin{{{---------------------------------------------------------------------------
@@ -311,7 +241,7 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 " ######ctags#################################
 :set tags+=./tags
 " 正向遍历同名标签
-nmap <Leader>tn :tnext<CR>
+nmap <Leader>tn :tnext<CR>  
 " 反向遍历同名标签
 nmap <Leader>tp :tprevious<CR>
 
@@ -325,7 +255,6 @@ let g:ycm_confirm_extra_conf = 0
 let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 let g:ycm_warning_symbol = '⚠'
 let g:ycm_error_symbol = '✗'
-"nnoremap <leader>jd :tab split<CR>:exec("YcmCompleter GoTo ")<CR>
 let g:ycm_key_list_select_completion=[] "// 不使用tab
 let g:ycm_key_list_previous_completion=[]
 nnoremap <leader>jd :tab split<CR>:exec("YcmCompleter GoTo ")<CR>
