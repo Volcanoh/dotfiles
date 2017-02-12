@@ -1,10 +1,13 @@
 #!/bin/sh
 
+mv dotfiles ~/.dotfiles
+
 #vim
-ln -s ~/dotfiles/vim ~/.vim
-ln -s ~/dotfiles/vim/vimrc ~/.vimrc
-#zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-ln -s ~/dotfiles/zshrc ~/.zshrc
+ln -sf ~/.dotfiles/vim ~/.vim
+ln -sf ~/.dotfiles/vim/vimrc ~/.vimrc
+git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+cd ~/.vim/bundle/YouCompleteMe
+./install.sh --clang-completer
+
 #tmux 
-ln -s ~/dotfiles/tmux.conf ~/.tmux.conf
+ln -sf ~/.dotfiles/tmux.conf ~/.tmux.conf
