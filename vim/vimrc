@@ -63,8 +63,6 @@ Plugin 'vim-scripts/indexer.tar.gz'
 Plugin 'vim-latex/vim-latex' " latex
 call vundle#end()
 
-
-
 noremap <Leader>b ^
 noremap<Leader>e $
 noremap<Leader>a A
@@ -132,6 +130,7 @@ map <silent> <F12> :set invlist<CR>
 " " }}}
 nnoremap <leader>rs :source ~/.vimrc<CR>
 nnoremap <leader>re :e ~/.vim/vimrc<CR>
+nnoremap <leader>rr :e ~/.vim/readme.md<CR>
 cnoremap <leader>rc :silent ! cd ~/.dotfiles/ && git commit ~/.dotfiles/vim/vimrc -v <CR>
 nnoremap <leader>rp :silent ! cd ~/.dotfiles/ && git push <CR>
 
