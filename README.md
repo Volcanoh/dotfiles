@@ -20,5 +20,5 @@ Download and compile ycmd `cd ~/.vim/bundle/YouCompleteMe && ./install.py --clan
 `<C-h>h,j,k,l` swift windows
 
 ### zsh
-`sudo apt-get install zsh`
+`sudo apt-get install zsh`  
 `sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"`
