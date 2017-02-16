@@ -21,4 +21,5 @@ Download and compile ycmd `cd ~/.vim/bundle/YouCompleteMe && ./install.py --clan
 
 ### zsh
 `sudo apt-get install zsh`  
-`sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"`
+`sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"`  
+`chsh -s /bin/zsh`
