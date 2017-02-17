@@ -73,6 +73,7 @@ noremap <Leader>p "+p
 nmap <Leader>q :q<CR>
 nmap <Leader>w :w<CR>
 nmap <Leader>fs :w<CR>
+nmap <Leader>= ggvG=<CR>
 noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Left> <Nop>
@@ -82,12 +83,21 @@ noremap <C-t>n :tabnew<CR>
 noremap <C-t>l :tabnext<CR>
 noremap <C-t>h :tabprevious<CR>
 noremap <C-t>c :tabclose<CR>
+
 " split windows hot key
 " <C-w>s  horizontal spliting
 " <C-w>v  vertical spliting
 " <C-w>q  close one 
 " <C-w><C-w> switch between windows
 " <C-w>j(Or h, k, l) switch to adjacent window
+noremap <C-w>- <C-w>s<CR>
+noremap <C-w>\ <C-w>v<CR>
+
+" Buffer swich
+noremap <Leader>bn :bn<CR>
+noremap <Leader>bb :bn<CR>
+noremap <Leader>bp :bp<CR>
+noremap <Leader>bpp :b#<CR>
 
 imap fd <Esc>
 vmap fd <Esc>
@@ -209,7 +219,7 @@ au FileType vimrc b:delimitMate_matchpairs = "(:),[:],{:}"
 " mappings for latex-box plugin
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 map <silent> <Leader>ls :silent !/Applications/Skim.app/Contents/SharedSupport/displayline
-            \ <C-R>=line('.')<CR> "<C-R>=LatexBox_GetOutputFile()<CR>" "%:p" <CR>
+      \ <C-R>=line('.')<CR> "<C-R>=LatexBox_GetOutputFile()<CR>" "%:p" <CR>
 autocmd filetype tex nnoremap F10 :!latexmk -pdf % 
 let g:Tex_DefaultTargetFormat='pdf'
 let g:Tex_CompileRule_pdf = 'pdflatex --synctex=-1 -src-specials -interaction=nonstopmode $*'
@@ -285,9 +295,9 @@ let g:ctrlp_map = '<leader>p'
 let g:ctrlp_cmd = 'CtrlP'
 map <leader>f :CtrlPMRU<CR>
 let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
-    \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc)$',
-    \ }
+      \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
+      \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc)$',
+      \ }
 let g:ctrlp_working_path_mode=0
 let g:ctrlp_match_window_bottom=1
 let g:ctrlp_max_height=15
