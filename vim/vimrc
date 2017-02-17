@@ -72,7 +72,7 @@ imap <C-l> <right>
 nmap <Leader>q :q<CR>
 nmap <Leader>w :w<CR>
 nmap <Leader>fs :w<CR>
-cmap <Leader>= i<Esc>ggvG=gi<Esc>
+nmap <Leader>= i<Esc>ggvG=gi<Esc>
 noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Left> <Nop>
@@ -143,6 +143,26 @@ nnoremap <leader>rr :e ~/.vim/readme.md<CR>
 cnoremap <leader>rc :silent ! cd ~/.dotfiles/ && git commit ~/.dotfiles/vim/vimrc -v <CR>
 nnoremap <leader>rp :silent ! cd ~/.dotfiles/ && git push <CR>
 
+
+nnoremap <C-W>O :call MaximizeToggle()<CR>
+nnoremap <C-W>o :call MaximizeToggle()<CR>
+nnoremap <C-W><C-O> :call MaximizeToggle()<CR>
+
+function! MaximizeToggle()
+  if exists("s:maximize_session")
+    exec "source " . s:maximize_session
+    call delete(s:maximize_session)
+    unlet s:maximize_session
+    let &hidden=s:maximize_hidden_save
+    unlet s:maximize_hidden_save
+  else
+    let s:maximize_hidden_save = &hidden
+    let s:maximize_session = tempname()
+    set hidden
+    exec "mksession! " . s:maximize_session
+    only
+  endif
+endfunction
 " AutoCommands " 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 au BufRead,BufNewFile {*.go}                                          setl ft=go tabstop=2 softtabstop=2 noexpandtab smarttab
@@ -170,8 +190,8 @@ let g:SuperTabCrMapping                = 0
 let g:UltiSnipsExpandTrigger           = '<tab>'
 let g:UltiSnipsJumpForwardTrigger      = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger     = '<s-tab>'
-let g:ycm_key_list_select_completion   = ['<C-j>', '<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-k>', '<C-p>', '<Up>']
+let g:ycm_key_list_select_completion   = ['<C-j>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
 let g:UltiSnipsEditSplit="vertical"
 "ActivateAddons vim-snippets UltiSnips
 
@@ -292,7 +312,7 @@ let g:ctrlp_funky_syntax_highlight = 1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:ctrlp_map = '<leader>p'
 let g:ctrlp_cmd = 'CtrlP'
-"nnoremap <C-p> :CtrlP<CR>
+nnoremap <C-p> :CtrlP<CR>
 map <leader>f :CtrlPMRU<CR>
 let g:ctrlp_custom_ignore = {
       \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',

@@ -12,3 +12,4 @@
 `<leader>bb` next buffer  
 `<leader>bp` previous buffer  
 `<leader>bpp` pre-pre buffer  
+`<C-w>o` maximize window and return to previous split structure.  
