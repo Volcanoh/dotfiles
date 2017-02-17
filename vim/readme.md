@@ -7,7 +7,7 @@
 `<leader>jd` ycmd jump to file/function   
 `<leader>fu` select function in the file.   
 `<leader>dd da dl` doxgen   
-`<leader>=` ggvG=   
+`<leader>=` i<Esc>ggvG=gi<Esc>   
 `<leader>bn` next buffer  
 `<leader>bb` next buffer  
 `<leader>bp` previous buffer  

@@ -24,6 +24,7 @@ au FocusLost * :set norelativenumber number
 au FocusGained * :set relativenumber
 " 插入模式下用绝对行号, 普通模式下用相对
 autocmd InsertEnter * :set norelativenumber number
+
 autocmd InsertLeave * :set relativenumber
 
 
@@ -68,12 +69,10 @@ noremap<Leader>e $
 noremap<Leader>a A
 imap <C-h> <left>
 imap <C-l> <right>
-noremap <Leader>y "+y
-noremap <Leader>p "+p
 nmap <Leader>q :q<CR>
 nmap <Leader>w :w<CR>
 nmap <Leader>fs :w<CR>
-nmap <Leader>= ggvG=<CR>
+cmap <Leader>= i<Esc>ggvG=gi<Esc>
 noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Left> <Nop>
@@ -154,7 +153,7 @@ au BufRead,BufNewFile {*.md,*.mkd,*.markdown}                         setl ft=ma
 au BufRead,BufNewFile {*.scala}                                       setl ft=scala
 au! BufReadPost       {COMMIT_EDITMSG,*/COMMIT_EDITMSG}               exec 'setl ft=gitcommit noml list spell' | norm 1G
 au! BufWritePost      {*.snippet,*.snippets}                          call ReloadAllSnippets()
-
+au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif 
 " airline powerline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:airline_poweline_fonts = 1
@@ -293,6 +292,7 @@ let g:ctrlp_funky_syntax_highlight = 1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:ctrlp_map = '<leader>p'
 let g:ctrlp_cmd = 'CtrlP'
+"nnoremap <C-p> :CtrlP<CR>
 map <leader>f :CtrlPMRU<CR>
 let g:ctrlp_custom_ignore = {
       \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
