@@ -35,6 +35,7 @@ Plugin 'tpope/vim-repeat' "use . to repeat plugin command
 Plugin 'tpope/vim-surround' "ysiw]
 Plugin 'kien/ctrlp.vim' "<C-p> to find file
 Plugin 'tacahiroy/ctrlp-funky' " <leader>fu  
+Plugin 'octol/vim-cpp-enhanced-highlight'
 " Plugin 'tpope/vim-commentary' "a motion to comment [gc]
 " Plugin 'thinca/vim-quickrun'
 Plugin 'tyru/open-browser.vim'
@@ -174,6 +175,7 @@ au BufRead,BufNewFile {*.scala}                                       setl ft=sc
 au! BufReadPost       {COMMIT_EDITMSG,*/COMMIT_EDITMSG}               exec 'setl ft=gitcommit noml list spell' | norm 1G
 au! BufWritePost      {*.snippet,*.snippets}                          call ReloadAllSnippets()
 au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif 
+
 " airline powerline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:airline_poweline_fonts = 1
@@ -233,6 +235,7 @@ let g:load_doxygen_syntax = 1
 let delimitMate_matchpairs = "(:),[:],{:},<:>"
 au FileType cpp let b:delimitMate_matchpairs = "(:),[:],{:}"
 au FileType vimrc b:delimitMate_matchpairs = "(:),[:],{:}"
+setlocal cindent cino=j1,(0,ws,Ws " c++11 indent
 " end ----------------------------------------------------------------------------------}}}
 
 " mappings for latex-box plugin
