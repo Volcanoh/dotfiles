@@ -36,6 +36,7 @@ Plugin 'tpope/vim-surround' "ysiw]
 Plugin 'kien/ctrlp.vim' "<C-p> to find file
 Plugin 'tacahiroy/ctrlp-funky' " <leader>fu  
 Plugin 'octol/vim-cpp-enhanced-highlight'
+Plugin 'davidhalter/jedi-vim'
 " Plugin 'tpope/vim-commentary' "a motion to comment [gc]
 " Plugin 'thinca/vim-quickrun'
 Plugin 'tyru/open-browser.vim'

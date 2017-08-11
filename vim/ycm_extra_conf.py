@@ -88,6 +88,8 @@ flags = [
 '/usr/include/',
 '-isystem',
 '/usr/include/tbb/',
+'-isystem',
+'/opt/ros/kinetic/include/',
 ]
 
 
