@@ -91,6 +91,8 @@ flags = [
 '-isystem',
 '/opt/ros/kinetic/include/',
 '-isystem',
+'/opt/ros/kinetic/include/opencv-3.2.0-dev/',
+'-isystem',
 '/usr/include/pcl-1.7/',
 '-isystem',
 '/usr/include/eigen3/',
