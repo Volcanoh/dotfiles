@@ -40,6 +40,7 @@ Plugin 'davidhalter/jedi-vim'
 " Plugin 'tpope/vim-commentary' "a motion to comment [gc]
 " Plugin 'thinca/vim-quickrun'
 Plugin 'tyru/open-browser.vim'
+Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'DoxygenToolkit.vim'
 Plugin 'Raimondi/delimitMate' "auto add {} [] () and so on
@@ -177,6 +178,13 @@ au! BufReadPost       {COMMIT_EDITMSG,*/COMMIT_EDITMSG}               exec 'setl
 au! BufWritePost      {*.snippet,*.snippets}                          call ReloadAllSnippets()
 au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif 
 
+
+" markdown
+let g:vim_markdown_math = 1
+let g:vim_markdown_frontmatter = 1
+let g:vim_markdown_autowrite = 1
+
+
 " airline powerline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:airline_poweline_fonts = 1
@@ -291,7 +299,7 @@ let g:ycm_confirm_extra_conf = 0
 let g:ycm_global_ycm_extra_conf = '~/.dotfiles/vim/ycm_extra_conf.py'
 let g:ycm_warning_symbol = '⚠'
 let g:ycm_error_symbol = '✗'
-let g:ycm_key_list_select_completion=[] "// 不使用tab
+let g:ycm_key_list_select_completion=['space'] "// 不使用tab
 let g:ycm_key_list_previous_completion=[]
 let g:ycm_collect_identifiers_from_tags_files=0
 let g:ycm_cache_omnifunc=0

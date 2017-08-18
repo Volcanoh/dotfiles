@@ -90,6 +90,16 @@ flags = [
 '/usr/include/tbb/',
 '-isystem',
 '/opt/ros/kinetic/include/',
+'-isystem',
+'/usr/include/pcl-1.7/',
+'-isystem',
+'/usr/include/eigen3/',
+'-isystem',
+'/usr/include/qt4/',
+'-isystem',
+'/usr/include/qt4/QtCore',
+'-isystem',
+'/usr/include/qt4/QtGui',
 ]
 
 
