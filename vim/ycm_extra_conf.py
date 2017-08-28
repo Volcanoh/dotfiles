@@ -102,6 +102,12 @@ flags = [
 '/usr/include/qt4/QtCore',
 '-isystem',
 '/usr/include/qt4/QtGui',
+'-isystem',
+'/home/volcanoh/Downloads/CH_HCNetSDK_V5.2.7.4_build20170606_Linux64/incCn/',
+'-isystem',
+'/home/volcanoh/octopus/ros/src/sensors/drivers/octopus-driver-camera/spinnaker_camera_driver/spinnaker_camera_driver/include',
+'-isystem',
+'/home/volcanoh/octopus/ros/src/sensors/drivers/octopus-driver-camera/spinnaker_camera_driver/spinnaker_1_2_0_16_amd64/include',
 ]
 
 
