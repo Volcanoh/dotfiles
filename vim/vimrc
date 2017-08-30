@@ -37,7 +37,7 @@ Plugin 'kien/ctrlp.vim' "<C-p> to find file
 Plugin 'tacahiroy/ctrlp-funky' " <leader>fu  
 Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'davidhalter/jedi-vim'
- Plugin 'tpope/vim-commentary' "a motion to comment [gc]
+Plugin 'tpope/vim-commentary' "a motion to comment [gc]
 " Plugin 'thinca/vim-quickrun'
 Plugin 'tyru/open-browser.vim'
 Plugin 'godlygeek/tabular'
@@ -76,7 +76,7 @@ imap <C-l> <right>
 nmap <Leader>q :q<CR>
 nmap <Leader>w :w<CR>
 nmap <Leader>fs :w<CR>
-nmap <Leader>= i<Esc>ggvG=gi<Esc>
+nmap <Leader>= :call AlignAll()<CR>
 "noremap <Up> <Nop>
 "noremap <Down> <Nop>
 "noremap <Left> <Nop>
@@ -351,21 +351,21 @@ let g:ctrlp_follow_symlinks=1
 " wholeword：是否整词匹配
 " replace：被替换字符串
 function! Replace(confirm, wholeword, replace)
-    wa
-    let flag = ''
-    if a:confirm
-        let flag .= 'gec'
-    else
-        let flag .= 'ge'
-    endif
-    let search = ''
-    if a:wholeword
-        let search .= '\<' . escape(expand('<cword>'), '/\.*$^~[') . '\>'
-    else
-        let search .= expand('<cword>')
-    endif
-    let replace = escape(a:replace, '/\&~')
-    execute 'argdo %s/' . search . '/' . replace . '/' . flag . '| update'
+  wa
+  let flag = ''
+  if a:confirm
+    let flag .= 'gec'
+  else
+    let flag .= 'ge'
+  endif
+  let search = ''
+  if a:wholeword
+    let search .= '\<' . escape(expand('<cword>'), '/\.*$^~[') . '\>'
+  else
+    let search .= expand('<cword>')
+  endif
+  let replace = escape(a:replace, '/\&~')
+  execute 'argdo %s/' . search . '/' . replace . '/' . flag . '| update'
 endfunction
 " 不确认、非整词
 nnoremap <Leader>R :call Replace(0, 0, input('Replace '.expand('<cword>').' with: '))<CR>
@@ -383,3 +383,10 @@ try
   set undofile
 catch
 endtry
+
+function! AlignAll()
+  let cursor_save = getpos('.')
+  normal! ggVG=
+  call setpos('.', cursor_save)
+endfunction
+
