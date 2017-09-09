@@ -24,6 +24,7 @@ au FocusLost * :set norelativenumber number
 au FocusGained * :set relativenumber
 " 插入模式下用绝对行号, 普通模式下用相对
 autocmd InsertEnter * :set norelativenumber number
+
 autocmd InsertLeave * :set relativenumber
 
 
@@ -34,6 +35,7 @@ Plugin 'tpope/vim-repeat' "use . to repeat plugin command
 Plugin 'tpope/vim-surround' "ysiw]
 Plugin 'kien/ctrlp.vim' "<C-p> to find file
 Plugin 'tacahiroy/ctrlp-funky' " <leader>fu  
+Plugin 'octol/vim-cpp-enhanced-highlight'
 " Plugin 'tpope/vim-commentary' "a motion to comment [gc]
 " Plugin 'thinca/vim-quickrun'
 Plugin 'tyru/open-browser.vim'
@@ -68,11 +70,10 @@ noremap<Leader>e $
 noremap<Leader>a A
 imap <C-h> <left>
 imap <C-l> <right>
-noremap <Leader>y "+y
-noremap <Leader>p "+p
 nmap <Leader>q :q<CR>
 nmap <Leader>w :w<CR>
 nmap <Leader>fs :w<CR>
+nmap <Leader>= i<Esc>ggvG=gi<Esc>
 noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Left> <Nop>
@@ -82,12 +83,21 @@ noremap <C-t>n :tabnew<CR>
 noremap <C-t>l :tabnext<CR>
 noremap <C-t>h :tabprevious<CR>
 noremap <C-t>c :tabclose<CR>
+
 " split windows hot key
 " <C-w>s  horizontal spliting
 " <C-w>v  vertical spliting
 " <C-w>q  close one 
 " <C-w><C-w> switch between windows
 " <C-w>j(Or h, k, l) switch to adjacent window
+noremap <C-w>- <C-w>s<CR>
+noremap <C-w>\ <C-w>v<CR>
+
+" Buffer swich
+noremap <Leader>bn :bn<CR>
+noremap <Leader>bb :bn<CR>
+noremap <Leader>bp :bp<CR>
+noremap <Leader>bpp :b#<CR>
 
 imap fd <Esc>
 vmap fd <Esc>
@@ -119,7 +129,7 @@ set foldopen+=quickfix
 set virtualedit=block
 set splitbelow
 set splitright
-set list                      " display unprintable characters f12 - switches
+"set list                      " display unprintable characters f12 - switches
 set listchars=tab:\ ·,eol:¬
 set listchars+=trail:·
 set listchars+=extends:»,precedes:«
@@ -134,6 +144,26 @@ nnoremap <leader>rr :e ~/.vim/readme.md<CR>
 cnoremap <leader>rc :silent ! cd ~/.dotfiles/ && git commit ~/.dotfiles/vim/vimrc -v <CR>
 nnoremap <leader>rp :silent ! cd ~/.dotfiles/ && git push <CR>
 
+
+nnoremap <C-W>O :call MaximizeToggle()<CR>
+nnoremap <C-W>o :call MaximizeToggle()<CR>
+nnoremap <C-W><C-O> :call MaximizeToggle()<CR>
+
+function! MaximizeToggle()
+  if exists("s:maximize_session")
+    exec "source " . s:maximize_session
+    call delete(s:maximize_session)
+    unlet s:maximize_session
+    let &hidden=s:maximize_hidden_save
+    unlet s:maximize_hidden_save
+  else
+    let s:maximize_hidden_save = &hidden
+    let s:maximize_session = tempname()
+    set hidden
+    exec "mksession! " . s:maximize_session
+    only
+  endif
+endfunction
 " AutoCommands " 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 au BufRead,BufNewFile {*.go}                                          setl ft=go tabstop=2 softtabstop=2 noexpandtab smarttab
@@ -144,6 +174,7 @@ au BufRead,BufNewFile {*.md,*.mkd,*.markdown}                         setl ft=ma
 au BufRead,BufNewFile {*.scala}                                       setl ft=scala
 au! BufReadPost       {COMMIT_EDITMSG,*/COMMIT_EDITMSG}               exec 'setl ft=gitcommit noml list spell' | norm 1G
 au! BufWritePost      {*.snippet,*.snippets}                          call ReloadAllSnippets()
+au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif 
 
 " airline powerline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -161,8 +192,8 @@ let g:SuperTabCrMapping                = 0
 let g:UltiSnipsExpandTrigger           = '<tab>'
 let g:UltiSnipsJumpForwardTrigger      = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger     = '<s-tab>'
-let g:ycm_key_list_select_completion   = ['<C-j>', '<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-k>', '<C-p>', '<Up>']
+let g:ycm_key_list_select_completion   = ['<C-j>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
 let g:UltiSnipsEditSplit="vertical"
 "ActivateAddons vim-snippets UltiSnips
 
@@ -204,12 +235,13 @@ let g:load_doxygen_syntax = 1
 let delimitMate_matchpairs = "(:),[:],{:},<:>"
 au FileType cpp let b:delimitMate_matchpairs = "(:),[:],{:}"
 au FileType vimrc b:delimitMate_matchpairs = "(:),[:],{:}"
+setlocal cindent cino=j1,(0,ws,Ws " c++11 indent
 " end ----------------------------------------------------------------------------------}}}
 
 " mappings for latex-box plugin
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 map <silent> <Leader>ls :silent !/Applications/Skim.app/Contents/SharedSupport/displayline
-            \ <C-R>=line('.')<CR> "<C-R>=LatexBox_GetOutputFile()<CR>" "%:p" <CR>
+      \ <C-R>=line('.')<CR> "<C-R>=LatexBox_GetOutputFile()<CR>" "%:p" <CR>
 autocmd filetype tex nnoremap F10 :!latexmk -pdf % 
 let g:Tex_DefaultTargetFormat='pdf'
 let g:Tex_CompileRule_pdf = 'pdflatex --synctex=-1 -src-specials -interaction=nonstopmode $*'
@@ -283,11 +315,12 @@ let g:ctrlp_funky_syntax_highlight = 1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:ctrlp_map = '<leader>p'
 let g:ctrlp_cmd = 'CtrlP'
+nnoremap <C-p> :CtrlP<CR>
 map <leader>f :CtrlPMRU<CR>
 let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
-    \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc)$',
-    \ }
+      \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
+      \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc)$',
+      \ }
 let g:ctrlp_working_path_mode=0
 let g:ctrlp_match_window_bottom=1
 let g:ctrlp_max_height=15

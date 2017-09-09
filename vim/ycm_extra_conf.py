@@ -88,6 +88,12 @@ flags = [
 '/usr/include/',
 '-isystem',
 '/usr/include/eigen3',
+'-isystem',
+'/usr/include/tbb/',
+'-isystem',
+'/usr/include/pcl-1.7/',
+'-isystem',
+'/opt/ros/kinetic/include',
 ]
 
 
