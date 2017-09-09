@@ -10,7 +10,7 @@ set ruler " 显示光标当前位置
 set number
 set cursorline " 高亮显示当前行
 set cursorcolumn " 高亮显示当前列
-set gcr=a:block-blinkon0 " 禁止光标闪烁
+"set gcr=a:block-blinkon0 " 禁止光标闪烁
 set mouse-=a
 set tabstop=2
 set shiftwidth=2
@@ -36,9 +36,11 @@ Plugin 'tpope/vim-surround' "ysiw]
 Plugin 'kien/ctrlp.vim' "<C-p> to find file
 Plugin 'tacahiroy/ctrlp-funky' " <leader>fu  
 Plugin 'octol/vim-cpp-enhanced-highlight'
-" Plugin 'tpope/vim-commentary' "a motion to comment [gc]
+Plugin 'davidhalter/jedi-vim'
+Plugin 'tpope/vim-commentary' "a motion to comment [gc]
 " Plugin 'thinca/vim-quickrun'
 Plugin 'tyru/open-browser.vim'
+Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'DoxygenToolkit.vim'
 Plugin 'Raimondi/delimitMate' "auto add {} [] () and so on
@@ -63,6 +65,7 @@ Plugin 'DfrankUtil'
 Plugin 'Vimprj'
 Plugin 'vim-scripts/indexer.tar.gz'
 Plugin 'vim-latex/vim-latex' " latex
+Plugin 'vim-scripts/mru'
 call vundle#end()
 
 noremap <Leader>b ^
@@ -73,16 +76,18 @@ imap <C-l> <right>
 nmap <Leader>q :q<CR>
 nmap <Leader>w :w<CR>
 nmap <Leader>fs :w<CR>
-nmap <Leader>= i<Esc>ggvG=gi<Esc>
-noremap <Up> <Nop>
-noremap <Down> <Nop>
-noremap <Left> <Nop>
-noremap <Right> <Nop>
+nmap <Leader>= :call AlignAll()<CR>
+"noremap <Up> <Nop>
+"noremap <Down> <Nop>
+"noremap <Left> <Nop>
+"noremap <Right> <Nop>
 "swift tab
 noremap <C-t>n :tabnew<CR>
 noremap <C-t>l :tabnext<CR>
 noremap <C-t>h :tabprevious<CR>
 noremap <C-t>c :tabclose<CR>
+" Allow saving of files as sudo when I forgot to start vim using sudo.
+cmap w!! w !sudo tee > /dev/null %
 
 " split windows hot key
 " <C-w>s  horizontal spliting
@@ -104,7 +109,7 @@ vmap fd <Esc>
 " Visual "{{{
 syntax on                      " enable syntax
 " set synmaxcol=250              " limit syntax highlighting to 128 columns
-set mousehide                 " Hide mouse after chars typed
+"set mousehide                 " Hide mouse after chars typed
 set nonumber                  " line numbers Off
 set showmatch                 " Show matching brackets.
 set matchtime=2               " Bracket blinking.
@@ -133,7 +138,7 @@ set splitright
 set listchars=tab:\ ·,eol:¬
 set listchars+=trail:·
 set listchars+=extends:»,precedes:«
-map <silent> <F12> :set invlist<CR>
+"map <silent> <F12> :set invlist<CR>
 "}}}
 " open help in vertical split
 " au BufWinEnter {*.txt} if 'help' == &ft | wincmd H | nmap q :q<CR> | endif
@@ -166,6 +171,7 @@ function! MaximizeToggle()
 endfunction
 " AutoCommands " 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+au BufRead,BufNewFile {*.launch,*.xml}                                setl ft=xml
 au BufRead,BufNewFile {*.go}                                          setl ft=go tabstop=2 softtabstop=2 noexpandtab smarttab
 au BufRead,BufNewFile {*.coffee}                                      setl ft=coffee tabstop=2 softtabstop=2 expandtab smarttab
 au BufRead,BufNewFile {Gemfile,Rakefile,*.rake,config.ru,*.rabl}      setl ft=ruby tabstop=2 softtabstop=2 shiftwidth=2 expandtab smarttab
@@ -175,6 +181,13 @@ au BufRead,BufNewFile {*.scala}                                       setl ft=sc
 au! BufReadPost       {COMMIT_EDITMSG,*/COMMIT_EDITMSG}               exec 'setl ft=gitcommit noml list spell' | norm 1G
 au! BufWritePost      {*.snippet,*.snippets}                          call ReloadAllSnippets()
 au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif 
+
+
+" markdown
+let g:vim_markdown_math = 1
+let g:vim_markdown_frontmatter = 1
+let g:vim_markdown_autowrite = 1
+
 
 " airline powerline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -290,8 +303,12 @@ let g:ycm_confirm_extra_conf = 0
 let g:ycm_global_ycm_extra_conf = '~/.dotfiles/vim/ycm_extra_conf.py'
 let g:ycm_warning_symbol = '⚠'
 let g:ycm_error_symbol = '✗'
-let g:ycm_key_list_select_completion=[] "// 不使用tab
+let g:ycm_key_list_select_completion=['space'] "// 不使用tab
 let g:ycm_key_list_previous_completion=[]
+let g:ycm_collect_identifiers_from_tags_files=0
+let g:ycm_cache_omnifunc=0
+let g:ycm_complete_in_comments=1
+
 nnoremap <leader>jd :tab split<CR>:exec("YcmCompleter GoTo ")<CR>
 
 " ctag
@@ -327,4 +344,49 @@ let g:ctrlp_max_height=15
 let g:ctrlp_match_window_reversed=0
 let g:ctrlp_mruf_max=500
 let g:ctrlp_follow_symlinks=1
+
+" 精准替换
+" 替换函数。参数说明：
+" confirm：是否替换前逐一确认
+" wholeword：是否整词匹配
+" replace：被替换字符串
+function! Replace(confirm, wholeword, replace)
+  wa
+  let flag = ''
+  if a:confirm
+    let flag .= 'gec'
+  else
+    let flag .= 'ge'
+  endif
+  let search = ''
+  if a:wholeword
+    let search .= '\<' . escape(expand('<cword>'), '/\.*$^~[') . '\>'
+  else
+    let search .= expand('<cword>')
+  endif
+  let replace = escape(a:replace, '/\&~')
+  execute 'argdo %s/' . search . '/' . replace . '/' . flag . '| update'
+endfunction
+" 不确认、非整词
+nnoremap <Leader>R :call Replace(0, 0, input('Replace '.expand('<cword>').' with: '))<CR>
+" 不确认、整词
+nnoremap <Leader>rw :call Replace(0, 1, input('Replace '.expand('<cword>').' with: '))<CR>
+" 确认、非整词
+nnoremap <Leader>rc :call Replace(1, 0, input('Replace '.expand('<cword>').' with: '))<CR>
+" 确认、整词
+nnoremap <Leader>rcw :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
+nnoremap <Leader>rwc :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
+
+try
+  set undodir=~/.vim/temp
+
+  set undofile
+catch
+endtry
+
+function! AlignAll()
+  let cursor_save = getpos('.')
+  normal! ggVG=
+  call setpos('.', cursor_save)
+endfunction
 
