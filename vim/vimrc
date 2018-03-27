@@ -66,6 +66,7 @@ Plugin 'Vimprj'
 Plugin 'vim-scripts/indexer.tar.gz'
 Plugin 'vim-latex/vim-latex' " latex
 Plugin 'vim-scripts/mru'
+Plugin 'majutsushi/tagbar'
 call vundle#end()
 
 noremap <Leader>b ^
@@ -77,6 +78,7 @@ nmap <Leader>q :q<CR>
 nmap <Leader>w :w<CR>
 nmap <Leader>fs :w<CR>
 nmap <Leader>= :call AlignAll()<CR>
+nnoremap <Leader>t "=strftime("%d/%m/%y %H:%M:%S")<CR>P"
 "noremap <Up> <Nop>
 "noremap <Down> <Nop>
 "noremap <Left> <Nop>
@@ -390,3 +392,4 @@ function! AlignAll()
   call setpos('.', cursor_save)
 endfunction
 
+nmap <leader>tt :TagbarToggle<CR>

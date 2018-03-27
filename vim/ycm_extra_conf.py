@@ -106,6 +106,16 @@ flags = [
 '/usr/include/qt4/QtCore',
 '-isystem',
 '/usr/include/qt4/QtGui',
+'-isystem',
+'/home/volcanoh/github/eyetracker/include',
+'-isystem',
+'/home/volcanoh/github/eyetracker/src',
+'-isystem',
+'/home/volcanoh/github/pupiltracker/include',
+'-isystem',
+'/home/volcanoh/github/pupiltracker/src',
+'-isystem',
+'/home/volcanoh/macaca/devel/include/',
 ]
 
 
