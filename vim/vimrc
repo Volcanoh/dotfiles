@@ -67,6 +67,7 @@ Plugin 'vim-scripts/indexer.tar.gz'
 Plugin 'vim-latex/vim-latex' " latex
 Plugin 'vim-scripts/mru'
 Plugin 'majutsushi/tagbar'
+Plugin 'tmux-plugins/vim-tmux-focus-events'
 call vundle#end()
 
 noremap <Leader>b ^
