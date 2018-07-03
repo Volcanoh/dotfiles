@@ -95,7 +95,7 @@ flags = [
 '-isystem',
 '/opt/ros/kinetic/include',
 '-isystem',
-'/opt/ros/kinetic/include/opencv-3.2.0-dev/',
+'/opt/ros/kinetic/include/opencv-3.3.1-dev',
 '-isystem',
 '/usr/include/pcl-1.7/',
 '-isystem',
@@ -107,15 +107,11 @@ flags = [
 '-isystem',
 '/usr/include/qt4/QtGui',
 '-isystem',
-'/home/volcanoh/github/eyetracker/include',
+'/home/volcanoh/github/ORB_SLAM2/src',
 '-isystem',
-'/home/volcanoh/github/eyetracker/src',
+'/home/volcanoh/github/ORB_SLAM2/include',
 '-isystem',
-'/home/volcanoh/github/pupiltracker/include',
-'-isystem',
-'/home/volcanoh/github/pupiltracker/src',
-'-isystem',
-'/home/volcanoh/macaca/devel/include/',
+'/home/volcanoh/github/ORB_SLAM2',
 ]
 
 

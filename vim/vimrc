@@ -312,7 +312,8 @@ let g:ycm_collect_identifiers_from_tags_files=0
 let g:ycm_cache_omnifunc=0
 let g:ycm_complete_in_comments=1
 
-nnoremap <leader>jd :tab split<CR>:exec("YcmCompleter GoTo ")<CR>
+nnoremap <leader>jd :exec("YcmCompleter GoToDefinition ")<CR>
+nnoremap <leader>jj :exec("YcmCompleter GoToDeclaration ")<CR>
 
 " ctag
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
