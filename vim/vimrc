@@ -14,6 +14,7 @@ set cursorcolumn " 高亮显示当前列
 set mouse-=a
 set tabstop=2
 set shiftwidth=2
+"c++ public private
 set expandtab
 filetype indent on
 set incsearch
@@ -251,14 +252,17 @@ let g:load_doxygen_syntax = 1
 let delimitMate_matchpairs = "(:),[:],{:},<:>"
 au FileType cpp let b:delimitMate_matchpairs = "(:),[:],{:}"
 au FileType vimrc b:delimitMate_matchpairs = "(:),[:],{:}"
+
 setlocal cindent cino=j1,(0,ws,Ws " c++11 indent
+set cindent cinoptions+=g0,h2
+
 " end ----------------------------------------------------------------------------------}}}
 
 " mappings for latex-box plugin
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 map <silent> <Leader>ls :silent !/Applications/Skim.app/Contents/SharedSupport/displayline
       \ <C-R>=line('.')<CR> "<C-R>=LatexBox_GetOutputFile()<CR>" "%:p" <CR>
-autocmd filetype tex nnoremap F10 :!latexmk -pdf % 
+autocmd filetype tex nnoremap <F10> :!latexmk -pdf % 
 let g:Tex_DefaultTargetFormat='pdf'
 let g:Tex_CompileRule_pdf = 'pdflatex --synctex=-1 -src-specials -interaction=nonstopmode $*'
 " end----------------------------------------------------------------------------------}}}
