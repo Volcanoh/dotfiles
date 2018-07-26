@@ -32,6 +32,7 @@ autocmd InsertLeave * :set relativenumber
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
+Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'tpope/vim-repeat' "use . to repeat plugin command
 Plugin 'tpope/vim-surround' "ysiw]
 Plugin 'kien/ctrlp.vim' "<C-p> to find file
@@ -40,7 +41,7 @@ Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'tpope/vim-commentary' "a motion to comment [gc]
 " Plugin 'thinca/vim-quickrun'
-Plugin 'tyru/open-browser.vim'
+"Plugin 'tyru/open-browser.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'DoxygenToolkit.vim'
@@ -52,7 +53,7 @@ Plugin 'ervandew/supertab'
 Plugin 'gabrielelana/awesome-terminal-fonts'
 Plugin 'vim-airline/vim-airline' "status and tabline 
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'Zuckonit/vim-airline-tomato'
+"Plugin 'Zuckonit/vim-airline-tomato'
 Plugin 'vim-scripts/CmdlineCompl.vim'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'tomasr/molokai'
@@ -69,18 +70,19 @@ Plugin 'vim-latex/vim-latex' " latex
 Plugin 'vim-scripts/mru'
 Plugin 'majutsushi/tagbar'
 Plugin 'tmux-plugins/vim-tmux-focus-events'
+"Plugin 'vim-scripts/toggle_maximize.vim'
 call vundle#end()
 
-noremap <Leader>b ^
-noremap<Leader>e $
-noremap<Leader>a A
+noremap <leader>b ^
+noremap<leader>e $
+noremap<leader>a A
 imap <C-h> <left>
 imap <C-l> <right>
-nmap <Leader>q :q<CR>
-nmap <Leader>w :w<CR>
-nmap <Leader>fs :w<CR>
-nmap <Leader>= :call AlignAll()<CR>
-nnoremap <Leader>t "=strftime("%d/%m/%y %H:%M:%S")<CR>P"
+nmap <leader>q :q<CR>
+nmap <leader>w :w<CR>zz
+nmap <leader>fs :w<CR>zz
+nmap <leader>= :call AlignAll()<CR>zz
+nnoremap <leader>t "=strftime("%d/%m/%y %H:%M:%S")<CR>P"
 "noremap <Up> <Nop>
 "noremap <Down> <Nop>
 "noremap <Left> <Nop>
@@ -103,10 +105,10 @@ noremap <C-w>- <C-w>s<CR>
 noremap <C-w>\ <C-w>v<CR>
 
 " Buffer swich
-noremap <Leader>bn :bn<CR>
-noremap <Leader>bb :bn<CR>
-noremap <Leader>bp :bp<CR>
-noremap <Leader>bpp :b#<CR>
+noremap <leader>bn :bn<CR>
+noremap <leader>bb :bn<CR>
+noremap <leader>bp :bp<CR>
+noremap <leader>bpp :b#<CR>
 
 imap fd <Esc>
 vmap fd <Esc>
@@ -116,7 +118,7 @@ syntax on                      " enable syntax
 "set mousehide                 " Hide mouse after chars typed
 set nonumber                  " line numbers Off
 set showmatch                 " Show matching brackets.
-set matchtime=2               " Bracket blinking.
+set matchtime=1               " Bracket blinking.
 set wildmode=longest,list     " At command line, complete longest common string, then list alternatives.
 set completeopt-=preview      " disable auto opening preview window
 set novisualbell              " No blinking
@@ -157,6 +159,22 @@ nnoremap <leader>rp :silent ! cd ~/.dotfiles/ && git push <CR>
 nnoremap <C-W>O :call MaximizeToggle()<CR>
 nnoremap <C-W>o :call MaximizeToggle()<CR>
 nnoremap <C-W><C-O> :call MaximizeToggle()<CR>
+function! MaximizeToggle()
+  if exists("s:maximize_session")
+    exec "source " . s:maximize_session
+    call delete(s:maximize_session)
+    unlet s:maximize_session
+    let &hidden=s:maximize_hidden_save
+    unlet s:maximize_hidden_save
+  else
+    let s:maximize_hidden_save = &hidden
+    let s:maximize_session = tempname()
+    set hidden
+    exec "mksession! " . s:maximize_session
+    only
+  endif
+endfunction
+
 " AutoCommands " 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 au BufRead,BufNewFile {*.launch,*.xml}                                setl ft=xml
@@ -242,21 +260,13 @@ set cindent cinoptions+=g0,h2
 
 " end ----------------------------------------------------------------------------------}}}
 
-" mappings for latex-box plugin
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map <silent> <Leader>ls :silent !/Applications/Skim.app/Contents/SharedSupport/displayline
-      \ <C-R>=line('.')<CR> "<C-R>=LatexBox_GetOutputFile()<CR>" "%:p" <CR>
-autocmd filetype tex nnoremap <F10> :!latexmk -pdf % 
-let g:Tex_DefaultTargetFormat='pdf'
-let g:Tex_CompileRule_pdf = 'pdflatex --synctex=-1 -src-specials -interaction=nonstopmode $*'
-" end----------------------------------------------------------------------------------}}}
 
 " color theme
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set background=dark
 set t_Co=256
 let g:rehash256 = 1
-"let g:solarized_termcolors=256
+let g:solarized_termcolors=256
 let g:molokai_original = 1
 "colorscheme solarized
 colorscheme molokai
@@ -274,21 +284,22 @@ let g:indexer_ctagsCommandLineOptions="--c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-"map <C-n> :NERDTreeToggle<CR>
+"autocmd VimEnter * cd %:p:h<CR>
+map <C-n> :NERDTreeToggle<CR>
 "
 " ctags
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 :set tags+=./tags
 " 正向遍历同名标签
-nmap <Leader>tn :tnext<CR>  
+nmap <leader>tn :tnext<CR>  
 " 反向遍历同名标签
-nmap <Leader>tp :tprevious<CR>
+nmap <leader>tp :tprevious<CR>
 
 " YouCompleteme
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:ycm_server_use_vim_stdout = 1
 let g:ycm_confirm_extra_conf = 0
-"let g:ycm_server_log_level = 'debug'
+let g:ycm_server_log_level = 'debug'
 "let g:ycm_extra_conf_globlist = ['~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py']
 "let g:ycm_global_ycm_extra_conf = '~/.vim/bundlesYouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 let g:ycm_global_ycm_extra_conf = '~/.dotfiles/vim/ycm_extra_conf.py'
@@ -296,12 +307,17 @@ let g:ycm_warning_symbol = '⚠'
 let g:ycm_error_symbol = '✗'
 let g:ycm_key_list_select_completion=['space'] "// 不使用tab
 let g:ycm_key_list_previous_completion=[]
-let g:ycm_collect_identifiers_from_tags_files=0
+let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_cache_omnifunc=0
 let g:ycm_complete_in_comments=1
+let g:ycm_complete_in_strings = 1
 
-nnoremap <leader>jj :exec("YcmCompleter GoToDefinition ")<CR>
-nnoremap <leader>jd :exec("YcmCompleter GoTo")<CR>
+nnoremap <leader>ji :exec("YcmCompleter GoToInclude ")<CR>
+"nnoremap <leader>jd :exec("YcmCompleter GoToDefinition ")<CR>
+nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nnoremap <leader>jj :exec("YcmCompleter GoToDeclaration ")<CR>
+nnoremap <leader>jf :exec("YcmCompleter GoTo")<CR>
+"nnoremap <leader>jc :exec("YcmCompleter ClearCompilationFlagCache")<CR>
 
 " ctag
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -315,9 +331,9 @@ map <C-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 
 " ctrlpfunky
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <Leader>fu :CtrlPFunky<Cr>
+nnoremap <leader>fu :CtrlPFunky<Cr>
 " narrow the list down with a word under cursor
-nnoremap <Leader>fU :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
+nnoremap <leader>fU :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
 let g:ctrlp_funky_syntax_highlight = 1
 
 " ctrlp
@@ -325,7 +341,7 @@ let g:ctrlp_funky_syntax_highlight = 1
 let g:ctrlp_map = '<leader>p'
 let g:ctrlp_cmd = 'CtrlP'
 nnoremap <C-p> :CtrlP<CR>
-map <leader>f :CtrlPMRU<CR>
+map <leader>ff :CtrlPMRU<CR>
 let g:ctrlp_custom_ignore = {
       \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
       \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc)$',
@@ -360,18 +376,17 @@ function! Replace(confirm, wholeword, replace)
   execute 'argdo %s/' . search . '/' . replace . '/' . flag . '| update'
 endfunction
 " 不确认、非整词
-nnoremap <Leader>R :call Replace(0, 0, input('Replace '.expand('<cword>').' with: '))<CR>
+nnoremap <leader>R :call Replace(0, 0, input('Replace '.expand('<cword>').' with: '))<CR>
 " 不确认、整词
-nnoremap <Leader>rw :call Replace(0, 1, input('Replace '.expand('<cword>').' with: '))<CR>
+nnoremap <leader>rw :call Replace(0, 1, input('Replace '.expand('<cword>').' with: '))<CR>
 " 确认、非整词
-nnoremap <Leader>rc :call Replace(1, 0, input('Replace '.expand('<cword>').' with: '))<CR>
+nnoremap <leader>rc :call Replace(1, 0, input('Replace '.expand('<cword>').' with: '))<CR>
 " 确认、整词
-nnoremap <Leader>rcw :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
-nnoremap <Leader>rwc :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
+nnoremap <leader>rcw :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
+nnoremap <leader>rwc :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
 
 try
   set undodir=~/.vim/temp
-
   set undofile
 catch
 endtry
@@ -383,3 +398,21 @@ function! AlignAll()
 endfunction
 
 nmap <leader>tt :TagbarToggle<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""
+let g:rbpt_colorpairs = [                                                  
+    \ [158, '#00ceb3'],                                                    
+    \ [081, '#00a3ff'],                                                    
+    \ [214, '#ff8d00'],                                                    
+    \ [123, '#3fffc9'],                                                    
+    \ [045, '#29b9ec'],                                                    
+    \ [190, '#bfec29'],                                                    
+    \ [208, '#ffad00'],                                                    
+    \ [117, '#48bde0'],
+    \]
+let g:rbpt_max = 8
+let g:rbpt_loadcmd_toggle = 0
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
