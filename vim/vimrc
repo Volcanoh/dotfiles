@@ -3,14 +3,15 @@ filetype off
 filetype plugin on 
 syntax on
 syntax enable
+set so=25
 set incsearch " 设置实时搜索功能
 set wildmenu " 设置自身命令行补全
 set nocompatible
-set ruler " 显示光标当前位置
+"set ruler " 显示光标当前位置
 set number
-set cursorline " 高亮显示当前行
+"set cursorline " 高亮显示当前行
 set cursorcolumn " 高亮显示当前列
-"set gcr=a:block-blinkon0 " 禁止光标闪烁
+set gcr=a:block-blinkon30 " 禁止光标闪烁
 set mouse-=a
 set tabstop=2
 set shiftwidth=2
@@ -19,13 +20,14 @@ set expandtab
 filetype indent on
 set incsearch
 set hlsearch
+nmap <leader>hl :set hlsearch! hlsearch?<CR>
 set foldmethod=indent 
-set relativenumber number " 相对行号
-au FocusLost * :set norelativenumber number
-au FocusGained * :set relativenumber
+set number " 相对行号
+"set norelativenumber number " 相对行号
+"au FocusLost * :set norelativenumber number
+"au FocusGained * :set relativenumber
 " 插入模式下用绝对行号, 普通模式下用相对
 autocmd InsertEnter * :set norelativenumber number
-
 autocmd InsertLeave * :set relativenumber
 
 
@@ -34,11 +36,13 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'tpope/vim-repeat' "use . to repeat plugin command
-Plugin 'tpope/vim-surround' "ysiw]
+"Plugin 'tpope/vim-surround' "ysiw]
 Plugin 'kien/ctrlp.vim' "<C-p> to find file
+Plugin 'airblade/vim-gitgutter'
 Plugin 'tacahiroy/ctrlp-funky' " <leader>fu  
 Plugin 'octol/vim-cpp-enhanced-highlight'
-Plugin 'davidhalter/jedi-vim'
+Plugin 'brooth/far.vim'
+"Plugin 'davidhalter/jedi-vim'
 Plugin 'tpope/vim-commentary' "a motion to comment [gc]
 " Plugin 'thinca/vim-quickrun'
 "Plugin 'tyru/open-browser.vim'
@@ -50,19 +54,19 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'ervandew/supertab'
-Plugin 'gabrielelana/awesome-terminal-fonts'
-Plugin 'vim-airline/vim-airline' "status and tabline 
-Plugin 'vim-airline/vim-airline-themes'
+"Plugin 'gabrielelana/awesome-terminal-fonts'
+"Plugin 'vim-airline/vim-airline' "status and tabline 
+"Plugin 'vim-airline/vim-airline-themes'
 "Plugin 'Zuckonit/vim-airline-tomato'
 Plugin 'vim-scripts/CmdlineCompl.vim'
-Plugin 'altercation/vim-colors-solarized'
+"Plugin 'altercation/vim-colors-solarized'
 Plugin 'tomasr/molokai'
 Plugin 'gmarik/ingretu'
-Plugin 'rainux/vim-desert-warm-256'
-Plugin 'scrooloose/nerdtree'
+"Plugin 'rainux/vim-desert-warm-256'
+"Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'kshenoy/vim-signature'
-Plugin 'Yggdroot/hiPairs'
+"Plugin 'Yggdroot/hiPairs'
 Plugin 'DfrankUtil'
 Plugin 'Vimprj'
 Plugin 'vim-scripts/indexer.tar.gz'
@@ -82,7 +86,7 @@ nmap <leader>q :q<CR>
 nmap <leader>w :w<CR>zz
 nmap <leader>fs :w<CR>zz
 nmap <leader>= :call AlignAll()<CR>zz
-nnoremap <leader>t "=strftime("%d/%m/%y %H:%M:%S")<CR>P"
+"nnoremap <leader>t "=strftime("%d/%m/%y %H:%M:%S")<CR>P"
 "noremap <Up> <Nop>
 "noremap <Down> <Nop>
 "noremap <Left> <Nop>
@@ -116,12 +120,11 @@ vmap fd <Esc>
 syntax on                      " enable syntax
 " set synmaxcol=250              " limit syntax highlighting to 128 columns
 "set mousehide                 " Hide mouse after chars typed
-set nonumber                  " line numbers Off
 set showmatch                 " Show matching brackets.
 set matchtime=1               " Bracket blinking.
 set wildmode=longest,list     " At command line, complete longest common string, then list alternatives.
 set completeopt-=preview      " disable auto opening preview window
-set novisualbell              " No blinking
+"set novisualbell              " Nowblinking
 set noerrorbells              " No noise.
 set vb t_vb=                  " disable any beeps or flashes on error
 set laststatus=2              " always show status line.
@@ -282,10 +285,10 @@ let g:indexer_ctagsCommandLineOptions="--c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v 
 
 " NERDtrss
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 "autocmd VimEnter * cd %:p:h<CR>
-map <C-n> :NERDTreeToggle<CR>
+"map <C-n> :NERDTreeToggle<CR>
 "
 " ctags
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -358,32 +361,32 @@ let g:ctrlp_follow_symlinks=1
 " confirm：是否替换前逐一确认
 " wholeword：是否整词匹配
 " replace：被替换字符串
-function! Replace(confirm, wholeword, replace)
-  wa
-  let flag = ''
-  if a:confirm
-    let flag .= 'gec'
-  else
-    let flag .= 'ge'
-  endif
-  let search = ''
-  if a:wholeword
-    let search .= '\<' . escape(expand('<cword>'), '/\.*$^~[') . '\>'
-  else
-    let search .= expand('<cword>')
-  endif
-  let replace = escape(a:replace, '/\&~')
-  execute 'argdo %s/' . search . '/' . replace . '/' . flag . '| update'
-endfunction
-" 不确认、非整词
-nnoremap <leader>R :call Replace(0, 0, input('Replace '.expand('<cword>').' with: '))<CR>
-" 不确认、整词
-nnoremap <leader>rw :call Replace(0, 1, input('Replace '.expand('<cword>').' with: '))<CR>
-" 确认、非整词
-nnoremap <leader>rc :call Replace(1, 0, input('Replace '.expand('<cword>').' with: '))<CR>
-" 确认、整词
-nnoremap <leader>rcw :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
-nnoremap <leader>rwc :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
+"function! Replace(confirm, wholeword, replace)
+  "wa
+  "let flag = ''
+  "if a:confirm
+    "let flag .= 'gec'
+  "else
+    "let flag .= 'ge'
+  "endif
+  "let search = ''
+  "if a:wholeword
+    "let search .= '\<' . escape(expand('<cword>'), '/\.*$^~[') . '\>'
+  "else
+    "let search .= expand('<cword>')
+  "endif
+  "let replace = escape(a:replace, '/\&~')
+  "execute 'argdo %s/' . search . '/' . replace . '/' . flag . '| update'
+"endfunction
+"" 不确认、非整词
+"nnoremap <leader>R :call Replace(0, 0, input('Replace '.expand('<cword>').' with: '))<CR>
+"" 不确认、整词
+"nnoremap <leader>rw :call Replace(0, 1, input('Replace '.expand('<cword>').' with: '))<CR>
+"" 确认、非整词
+"nnoremap <leader>rc :call Replace(1, 0, input('Replace '.expand('<cword>').' with: '))<CR>
+"" 确认、整词
+"nnoremap <leader>rcw :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
+"nnoremap <leader>rwc :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
 
 try
   set undodir=~/.vim/temp
@@ -400,19 +403,24 @@ endfunction
 nmap <leader>tt :TagbarToggle<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""
-let g:rbpt_colorpairs = [                                                  
-    \ [158, '#00ceb3'],                                                    
-    \ [081, '#00a3ff'],                                                    
-    \ [214, '#ff8d00'],                                                    
-    \ [123, '#3fffc9'],                                                    
-    \ [045, '#29b9ec'],                                                    
-    \ [190, '#bfec29'],                                                    
-    \ [208, '#ffad00'],                                                    
-    \ [117, '#48bde0'],
-    \]
+let g:rbpt_colorpairs = [                                                 
+   \ [158, '#00ceb3'],                                                    
+   \ [081, '#00a3ff'],                                                    
+   \ [214, '#ff8d00'],                                                    
+   \ [123, '#3fffc9'],                                                    
+   \ [045, '#29b9ec'],                                                    
+   \ [190, '#bfec29'],                                                    
+   \ [208, '#ffad00'],                                                    
+   \ [117, '#48bde0'],
+   \]
 let g:rbpt_max = 8
 let g:rbpt_loadcmd_toggle = 0
 au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
+
+nmap <leader>y "+y
+vmap <leader>y "+y
+nmap <leader>pp "+p
+

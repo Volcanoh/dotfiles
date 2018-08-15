@@ -16,7 +16,11 @@ BASE_FLAGS = [
         '-std=c++1z',
         '-xc++',
         '-I/usr/lib/',
-        '-I/usr/include/'
+        '-I/usr/include/',
+        '-isystem',
+        '/usr/include/eigen3/',
+        '-isystem',
+        '/home/volcanoh/catkin_ws/src/msckf_mono/include/',
         ]
 
 SOURCE_EXTENSIONS = [
