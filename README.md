@@ -15,6 +15,7 @@ Download and compile ycmd `cd ~/.vim/bundle/YouCompleteMe && ./install.py --clan
 
 ### tmux 
 `sudo apt-get install tmux`  
+`git clone https://github.com/gpakosz/.tmux.git`
 `ln -sf ~/.dotfiles/tmux.conf ~/.tmux.conf`
 #### hot key
 `<C-h>-` split verticle
