@@ -7,9 +7,9 @@ set so=25
 set incsearch " 设置实时搜索功能
 set wildmenu " 设置自身命令行补全
 set nocompatible
-"set ruler " 显示光标当前位置
+set ruler " 显示光标当前位置
 set number
-"set cursorline " 高亮显示当前行
+set cursorline " 高亮显示当前行
 set cursorcolumn " 高亮显示当前列
 set gcr=a:block-blinkon30 " 禁止光标闪烁
 set mouse-=a
@@ -37,27 +37,27 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'tpope/vim-repeat' "use . to repeat plugin command
 "Plugin 'tpope/vim-surround' "ysiw]
-Plugin 'kien/ctrlp.vim' "<C-p> to find file
+"Plugin 'kien/ctrlp.vim' "<C-p> to find file
 Plugin 'airblade/vim-gitgutter'
 Plugin 'tacahiroy/ctrlp-funky' " <leader>fu  
 Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'brooth/far.vim'
-"Plugin 'davidhalter/jedi-vim'
+"Plugin 'davidhalter/jedi-vim' 自动补全插件
 Plugin 'tpope/vim-commentary' "a motion to comment [gc]
 " Plugin 'thinca/vim-quickrun'
-"Plugin 'tyru/open-browser.vim'
+Plugin 'tyru/open-browser.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'DoxygenToolkit.vim'
 Plugin 'Raimondi/delimitMate' "auto add {} [] () and so on
 Plugin 'Valloric/YouCompleteMe'
-"Plugin 'SirVer/ultisnips'
-"Plugin 'honza/vim-snippets'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
 Plugin 'ervandew/supertab'
 "Plugin 'gabrielelana/awesome-terminal-fonts'
 "Plugin 'vim-airline/vim-airline' "status and tabline 
 "Plugin 'vim-airline/vim-airline-themes'
-"Plugin 'Zuckonit/vim-airline-tomato'
+Plugin 'Zuckonit/vim-airline-tomato'
 Plugin 'vim-scripts/CmdlineCompl.vim'
 "Plugin 'altercation/vim-colors-solarized'
 Plugin 'tomasr/molokai'
@@ -70,7 +70,7 @@ Plugin 'kshenoy/vim-signature'
 Plugin 'DfrankUtil'
 Plugin 'Vimprj'
 Plugin 'vim-scripts/indexer.tar.gz'
-Plugin 'vim-latex/vim-latex' " latex
+"Plugin 'vim-latex/vim-latex' " latex
 Plugin 'vim-scripts/mru'
 Plugin 'majutsushi/tagbar'
 Plugin 'tmux-plugins/vim-tmux-focus-events'
@@ -178,6 +178,13 @@ function! MaximizeToggle()
   endif
 endfunction
 
+" open-browser
+" My setting.
+let g:netrw_nogx = 1 " disable netrw's gx mapping.
+nmap gx <Plug>(openbrowser-smart-search)
+vmap gx <Plug>(openbrowser-smart-search)
+
+au BufReadPost        {*.cpp}                          call MaximizeToggle()
 " AutoCommands " 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 au BufRead,BufNewFile {*.launch,*.xml}                                setl ft=xml
@@ -235,7 +242,7 @@ let g:DoxygenToolkit_authorTag = "@author "
 let g:DoxygenToolkit_versionTag = "@version "
 let g:DoxygenToolkit_blockTag = "@name "
 let g:DoxygenToolkit_classTag = "@class "
-let g:DoxygenToolkit_authorName = "volcanoh <huang.volcano@gmail.com>"
+let g:DoxygenToolkit_authorName = "volcanoh <huangcan@megvii.com>"
 let g:DoxygenToolkit_blockHeader="--------------------------------------------------------------"
 let g:DoxygenToolkit_blockFooter="--------------------------------------------------------------"
 let g:DoxygenToolkit_licenseTag="GPL"
@@ -293,10 +300,6 @@ let g:indexer_ctagsCommandLineOptions="--c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v 
 " ctags
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 :set tags+=./tags
-" 正向遍历同名标签
-nmap <leader>tn :tnext<CR>  
-" 反向遍历同名标签
-nmap <leader>tp :tprevious<CR>
 
 " YouCompleteme
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -314,6 +317,9 @@ let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_cache_omnifunc=0
 let g:ycm_complete_in_comments=1
 let g:ycm_complete_in_strings = 1
+let g:ycm_enable_diagnostic_signs = 1
+let g:ycm_enable_diagnostic_highlighting = 1
+
 
 nnoremap <leader>ji :exec("YcmCompleter GoToInclude ")<CR>
 "nnoremap <leader>jd :exec("YcmCompleter GoToDefinition ")<CR>
@@ -345,6 +351,17 @@ let g:ctrlp_map = '<leader>p'
 let g:ctrlp_cmd = 'CtrlP'
 nnoremap <C-p> :CtrlP<CR>
 map <leader>ff :CtrlPMRU<CR>
+
+"Press <F5> to purge the cache for the current directory to get new files, remove deleted files and apply new ignore options.
+"Press <c-f> and <c-b> to cycle between modes.
+"Press <c-d> to switch to filename only search instead of full path.
+"Press <c-r> to switch to regexp mode.
+"Use <c-j>, <c-k> or the arrow keys to navigate the result list.
+"Use <c-t> or <c-v>, <c-x> to open the selected entry in a new tab or in a new split.
+"Use <c-n>, <c-p> to select the next/previous string in the prompt's history.
+"Use <c-y> to create a new file and its parent directories.
+"Use <c-z> to mark/unmark multiple files and <c-o> to open them.
+
 let g:ctrlp_custom_ignore = {
       \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
       \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc)$',
@@ -355,38 +372,6 @@ let g:ctrlp_max_height=15
 let g:ctrlp_match_window_reversed=0
 let g:ctrlp_mruf_max=500
 let g:ctrlp_follow_symlinks=1
-
-" 精准替换
-" 替换函数。参数说明：
-" confirm：是否替换前逐一确认
-" wholeword：是否整词匹配
-" replace：被替换字符串
-"function! Replace(confirm, wholeword, replace)
-  "wa
-  "let flag = ''
-  "if a:confirm
-    "let flag .= 'gec'
-  "else
-    "let flag .= 'ge'
-  "endif
-  "let search = ''
-  "if a:wholeword
-    "let search .= '\<' . escape(expand('<cword>'), '/\.*$^~[') . '\>'
-  "else
-    "let search .= expand('<cword>')
-  "endif
-  "let replace = escape(a:replace, '/\&~')
-  "execute 'argdo %s/' . search . '/' . replace . '/' . flag . '| update'
-"endfunction
-"" 不确认、非整词
-"nnoremap <leader>R :call Replace(0, 0, input('Replace '.expand('<cword>').' with: '))<CR>
-"" 不确认、整词
-"nnoremap <leader>rw :call Replace(0, 1, input('Replace '.expand('<cword>').' with: '))<CR>
-"" 确认、非整词
-"nnoremap <leader>rc :call Replace(1, 0, input('Replace '.expand('<cword>').' with: '))<CR>
-"" 确认、整词
-"nnoremap <leader>rcw :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
-"nnoremap <leader>rwc :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
 
 try
   set undodir=~/.vim/temp
@@ -404,15 +389,15 @@ nmap <leader>tt :TagbarToggle<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""
 let g:rbpt_colorpairs = [                                                 
-   \ [158, '#00ceb3'],                                                    
-   \ [081, '#00a3ff'],                                                    
-   \ [214, '#ff8d00'],                                                    
-   \ [123, '#3fffc9'],                                                    
-   \ [045, '#29b9ec'],                                                    
-   \ [190, '#bfec29'],                                                    
-   \ [208, '#ffad00'],                                                    
-   \ [117, '#48bde0'],
-   \]
+      \ [158, '#00ceb3'],                                                    
+      \ [081, '#00a3ff'],                                                    
+      \ [214, '#ff8d00'],                                                    
+      \ [123, '#3fffc9'],                                                    
+      \ [045, '#29b9ec'],                                                    
+      \ [190, '#bfec29'],                                                    
+      \ [208, '#ffad00'],                                                    
+      \ [117, '#48bde0'],
+      \]
 let g:rbpt_max = 8
 let g:rbpt_loadcmd_toggle = 0
 au VimEnter * RainbowParenthesesToggle

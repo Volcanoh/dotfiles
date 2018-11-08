@@ -181,7 +181,7 @@ def FlagsForFile(filename):
     root = os.path.realpath(filename);
     compilation_db_flags = FlagsForCompilationDatabase(root, filename)
     if compilation_db_flags:
-        final_flags = compilation_db_flags
+        final_flags = compilation_db_flags + BASE_FLAGS
     else:
         final_flags = BASE_FLAGS
         clang_flags = FlagsForClangComplete(root)
