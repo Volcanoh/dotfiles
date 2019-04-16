@@ -38,6 +38,12 @@ BASE_FLAGS = [
         '/System/Library/Frameworks',
         '-isystem',
         '/Library/Frameworks',
+        '-isystem',
+        '/home/volcanoh/catkin_ws/devel/include/',
+        '-isystem',
+        '/home/volcanoh/github/csm/include/',
+        '-isystem',
+        '/home/volcanoh/github/csm/src/',
         ]
 
 SOURCE_EXTENSIONS = [

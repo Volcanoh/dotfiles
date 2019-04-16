@@ -7,7 +7,7 @@ Change directory to home `cd ~`
 `git clone https://github.com/volcanoh/dotfiles .dotfiles`
 ### vim
 `sudo apt-get install vim`  
-`ln -sf ~/.dotfiles/vim ~/.vim && ln -sf ~/.dotfiles/vim/vimrc ~/.vimrc`    
+`ln -sf ~/.dotfiles/vim ~/.vim && mkdir -p ~/.vim/temp && ln -sf ~/.dotfiles/vim/vimrc ~/.vimrc`    
 `git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim `  
 Install ctags `sudo apt-get install ctags`    
 Launch vim and run `:PluginInstall`   
@@ -15,8 +15,10 @@ Download and compile ycmd `cd ~/.vim/bundle/YouCompleteMe && ./install.py --clan
 
 ### tmux 
 `sudo apt-get install tmux`  
+`sudo apt-get install xsel` #ubuntu
 `git clone https://github.com/gpakosz/.tmux.git`
-`ln -sf ~/.dotfiles/tmux.conf ~/.tmux.conf`
+`ln -sf ~/.dotfiles/tmux/tmux.conf ~/.tmux.conf && ln -sf ~/.dotfiles/tmux ~/.tmux`
+`git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm`
 #### hot key
 `<C-h>-` split verticle
 `<C-h>|` split horizon
