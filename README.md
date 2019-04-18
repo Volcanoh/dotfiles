@@ -15,14 +15,14 @@ Download and compile ycmd `cd ~/.vim/bundle/YouCompleteMe && ./install.py --clan
 
 ### tmux 
 `sudo apt-get install tmux`  
-`sudo apt-get install xsel` #ubuntu
+`sudo apt-get install xsel` #ubuntu   
 `git clone https://github.com/gpakosz/.tmux.git`
 `ln -sf ~/.dotfiles/tmux/tmux.conf ~/.tmux.conf && ln -sf ~/.dotfiles/tmux ~/.tmux`
 `git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm`
 #### hot key
-`<C-h>-` split verticle
-`<C-h>|` split horizon
-`<C-h>h,j,k,l` swift windows
+`<C-f>-` split verticle
+`<C-f>|` split horizon
+`<C-f>h,j,k,l` swift windows
 
 ### zsh
 `sudo apt-get install zsh`  
