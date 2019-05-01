@@ -17,10 +17,13 @@ BASE_FLAGS = [
         '-xc++',
         '-I/usr/lib/',
         '-I/usr/include/',
+        '-I/usr/include/c++/5',
         '-isystem',
         '/usr/include/eigen3/',
         '-isystem',
         '/usr/local/Cellar/eigen/3.3.5/include/eigen3',
+        '-isystem',
+        '/opt/ros/kinetic/include',
         '-isystem',
         '/home/volcanoh/catkin_ws/src/msckf_mono/include/',
         '-isystem',
@@ -37,6 +40,12 @@ BASE_FLAGS = [
         '/System/Library/Frameworks',
         '-isystem',
         '/Library/Frameworks',
+        '-isystem',
+        '/home/volcanoh/catkin_ws/devel/include/',
+        '-isystem',
+        '/home/volcanoh/github/csm/include/',
+        '-isystem',
+        '/home/volcanoh/github/csm/src/',
         ]
 
 SOURCE_EXTENSIONS = [

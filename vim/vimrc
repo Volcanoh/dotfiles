@@ -13,8 +13,8 @@ set number
 set cursorcolumn " 高亮显示当前列
 set gcr=a:block-blinkon30 " 禁止光标闪烁
 set mouse-=a
-set tabstop=2
-set shiftwidth=2
+set tabstop=4
+set shiftwidth=4
 "c++ public private
 set expandtab
 filetype indent on
@@ -101,11 +101,13 @@ noremap T :tabnew<CR>
 noremap <C-t>l :tabnext<CR>
 noremap <C-t>h :tabprevious<CR>
 noremap <C-t>c :tabclose<CR>
-noremap <leader>1 1gt
-noremap <leader>2 2gt
-noremap <leader>3 3gt
-noremap <leader>4 4gt
-noremap <leader>5 5gt
+
+noremap T :tabnew<CR>
+noremap <leader>1 1gt<CR>
+noremap <leader>2 2gt<CR>
+noremap <leader>3 3gt<CR>
+noremap <leader>4 4gt<CR>
+noremap <leader>5 5gt<CR>
 " Allow saving of files as sudo when I forgot to start vim using sudo.
 cmap w!! w !sudo tee > /dev/null %
 
