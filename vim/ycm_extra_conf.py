@@ -20,6 +20,8 @@ BASE_FLAGS = [
         '-isystem',
         '/usr/include/eigen3/',
         '-isystem',
+        '/usr/local/Cellar/eigen/3.3.5/include/eigen3',
+        '-isystem',
         '/home/volcanoh/catkin_ws/src/msckf_mono/include/',
         '-isystem',
         '/Library/Developer/CommandLineTools/usr/include/c++/v1',
@@ -181,7 +183,7 @@ def FlagsForFile(filename):
     root = os.path.realpath(filename);
     compilation_db_flags = FlagsForCompilationDatabase(root, filename)
     if compilation_db_flags:
-        final_flags = compilation_db_flags
+        final_flags = compilation_db_flags + BASE_FLAGS
     else:
         final_flags = BASE_FLAGS
         clang_flags = FlagsForClangComplete(root)

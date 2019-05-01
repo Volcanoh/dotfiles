@@ -51,8 +51,8 @@ Plugin 'plasticboy/vim-markdown'
 Plugin 'DoxygenToolkit.vim'
 Plugin 'Raimondi/delimitMate' "auto add {} [] () and so on
 Plugin 'Valloric/YouCompleteMe'
-"Plugin 'SirVer/ultisnips'
-"Plugin 'honza/vim-snippets'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
 Plugin 'ervandew/supertab'
 "Plugin 'gabrielelana/awesome-terminal-fonts'
 "Plugin 'vim-airline/vim-airline' "status and tabline 
@@ -75,6 +75,10 @@ Plugin 'vim-scripts/mru'
 Plugin 'majutsushi/tagbar'
 Plugin 'tmux-plugins/vim-tmux-focus-events'
 "Plugin 'vim-scripts/toggle_maximize.vim'
+Plugin 'lervag/vimtex'
+Plugin 'rking/ag.vim'
+
+
 call vundle#end()
 
 noremap <leader>b ^
@@ -93,9 +97,15 @@ nmap <leader>= :call AlignAll()<CR>zz
 "noremap <Right> <Nop>
 "swift tab
 noremap <C-t>n :tabnew<CR>
+noremap T :tabnew<CR>
 noremap <C-t>l :tabnext<CR>
 noremap <C-t>h :tabprevious<CR>
 noremap <C-t>c :tabclose<CR>
+noremap <leader>1 1gt
+noremap <leader>2 2gt
+noremap <leader>3 3gt
+noremap <leader>4 4gt
+noremap <leader>5 5gt
 " Allow saving of files as sudo when I forgot to start vim using sudo.
 cmap w!! w !sudo tee > /dev/null %
 
@@ -157,6 +167,7 @@ nnoremap <leader>re :e ~/.vim/vimrc<CR>
 nnoremap <leader>rr :e ~/.vim/readme.md<CR>
 cnoremap <leader>rc :silent ! cd ~/.dotfiles/ && git commit ~/.dotfiles/vim/vimrc -v <CR>
 nnoremap <leader>rp :silent ! cd ~/.dotfiles/ && git push <CR>
+nnoremap <leader>ag :Ag
 
 
 nnoremap <C-W>O :call MaximizeToggle()<CR>
@@ -223,7 +234,7 @@ let g:UltiSnipsEditSplit="vertical"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:DoxygenToolkit_briefTag_funcName = "yes"
 " for C++ style, change the '@' to '\'
-let g:DoxygenToolkit_commentType = "C++"
+"let g:DoxygenToolkit_commentType = "C++"
 let g:DoxygenToolkit_briefTag_pre = "@brief "
 let g:DoxygenToolkit_templateParamTag_pre = "@tparam "
 let g:DoxygenToolkit_paramTag_pre = "@param "
@@ -235,14 +246,14 @@ let g:DoxygenToolkit_authorTag = "@author "
 let g:DoxygenToolkit_versionTag = "@version "
 let g:DoxygenToolkit_blockTag = "@name "
 let g:DoxygenToolkit_classTag = "@class "
-let g:DoxygenToolkit_authorName = "volcanoh <huang.volcano@gmail.com>"
-let g:DoxygenToolkit_blockHeader="--------------------------------------------------------------"
-let g:DoxygenToolkit_blockFooter="--------------------------------------------------------------"
+let g:DoxygenToolkit_authorName = "volcanoh <huangcan@megvii.com>"
+"let g:DoxygenToolkit_blockHeader="--------------------------------------------------------------"
+"let g:DoxygenToolkit_blockFooter="--------------------------------------------------------------"
 let g:DoxygenToolkit_licenseTag="GPL"
 let g:doxygen_enhanced_color = 1
 " C++ style
-let g:DoxygenToolKit_startCommentBlock = "/// "
-let g:DoxygenToolKit_interCommentBlock = "/// "
+"let g:DoxygenToolKit_startCommentBlock = "/// "
+"let g:DoxygenToolKit_interCommentBlock = "/// "
 
 "creat doxgen comment
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -260,6 +271,7 @@ au FileType vimrc b:delimitMate_matchpairs = "(:),[:],{:}"
 
 setlocal cindent cino=j1,(0,ws,Ws " c++11 indent
 set cindent cinoptions+=g0,h2
+set cinwords=if,else,switch,case,for,while,do
 
 " end ----------------------------------------------------------------------------------}}}
 
@@ -314,6 +326,7 @@ let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_cache_omnifunc=0
 let g:ycm_complete_in_comments=1
 let g:ycm_complete_in_strings = 1
+let g:ycm_auto_trigger = 1
 
 nnoremap <leader>ji :exec("YcmCompleter GoToInclude ")<CR>
 "nnoremap <leader>jd :exec("YcmCompleter GoToDefinition ")<CR>
@@ -341,7 +354,7 @@ let g:ctrlp_funky_syntax_highlight = 1
 
 " ctrlp
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:ctrlp_map = '<leader>p'
+"let g:ctrlp_map = '<leader>p'
 let g:ctrlp_cmd = 'CtrlP'
 nnoremap <C-p> :CtrlP<CR>
 map <leader>ff :CtrlPMRU<CR>
@@ -355,6 +368,10 @@ let g:ctrlp_max_height=15
 let g:ctrlp_match_window_reversed=0
 let g:ctrlp_mruf_max=500
 let g:ctrlp_follow_symlinks=1
+if executable("ag")
+  let g:ackprg = "ag --nogroup --nocolumn"
+  let g:ctrlp_user_command = "ag %s -l --nocolor -g **"
+endif
 
 " 精准替换
 " 替换函数。参数说明：
@@ -422,5 +439,5 @@ au Syntax * RainbowParenthesesLoadBraces
 
 nmap <leader>y "+y
 vmap <leader>y "+y
-nmap <leader>pp "+p
+nmap <leader>p "+p
 
