@@ -21,6 +21,13 @@ BASE_FLAGS = [
         '-isystem',
         '/usr/include/eigen3/',
         '-isystem',
+        '/home/volcanoh/vins_ws/src/megvii_sensor_fusion/megvii_pose_graph/src',
+        '-isystem',
+        '/home/volcanoh/vins_ws/src/megvii_sensor_fusion/megvii_feature_tracker/src/',
+
+        '-isystem',
+        '/home/volcanoh/vins_ws/src/megvii_sensor_fusion/megvii_feature_tracker/src/',
+        '-isystem',
         '/usr/local/Cellar/eigen/3.3.5/include/eigen3',
         '-isystem',
         '/opt/ros/kinetic/include',
