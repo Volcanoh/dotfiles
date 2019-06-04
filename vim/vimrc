@@ -1,6 +1,8 @@
 let mapleader=";"
-filetype off
-filetype plugin on 
+"filetype off
+"filetype plugin on 
+filetype plugin indent on
+
 syntax on
 syntax enable
 set so=25
@@ -17,7 +19,7 @@ set tabstop=2
 set shiftwidth=2
 "c++ public private
 set expandtab
-filetype indent on
+"filetype indent on
 set incsearch
 set hlsearch
 nmap <leader>hl :set hlsearch! hlsearch?<CR>
@@ -46,8 +48,9 @@ Plugin 'brooth/far.vim'
 Plugin 'tpope/vim-commentary' "a motion to comment [gc]
 " Plugin 'thinca/vim-quickrun'
 "Plugin 'tyru/open-browser.vim'
+"Plugin 'vimwiki/vimwiki'
 Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
+"Plugin 'plasticboy/vim-markdown'
 Plugin 'DoxygenToolkit.vim'
 Plugin 'Raimondi/delimitMate' "auto add {} [] () and so on
 Plugin 'Valloric/YouCompleteMe'
@@ -78,6 +81,8 @@ Plugin 'tmux-plugins/vim-tmux-focus-events'
 Plugin 'lervag/vimtex'
 Plugin 'rking/ag.vim'
 Plugin 'rhysd/vim-clang-format'
+Plugin 'scrooloose/nerdtree'
+Plugin 'itchyny/calendar.vim'
 
 
 call vundle#end()
@@ -128,12 +133,13 @@ noremap <C-w>\ <C-w>v<CR>
 noremap <leader>bn :bn<CR>
 noremap <leader>bb :bn<CR>
 noremap <leader>bp :bp<CR>
+noremap <C-h> :bp<CR>
+noremap <C-l> :bn<CR>
 noremap <leader>bpp :b#<CR>
 
 imap fd <Esc>
 vmap fd <Esc>
 " Visual "{{{
-syntax on                      " enable syntax
 " set synmaxcol=250              " limit syntax highlighting to 128 columns
 "set mousehide                 " Hide mouse after chars typed
 set showmatch                 " Show matching brackets.
@@ -170,7 +176,7 @@ set listchars+=extends:»,precedes:«
 " " }}}
 nnoremap <leader>rs :source ~/.vimrc<CR>
 nnoremap <leader>re :e ~/.vimrc<CR>
-nnoremap <leader>rr :e ~/.dotfile/cim/readme.md<CR>
+nnoremap <leader>rr :e ~/.dotfile/vim/readme.md<CR>
 cnoremap <leader>rc :silent ! cd ~/.dotfiles/ && git commit ~/.dotfiles/vim/vimrc -v <CR>
 nnoremap <leader>rp :silent ! cd ~c.dotfiles/ && git push <CR>
 nnoremap <leader>ag :Ag
@@ -214,12 +220,20 @@ let g:vim_markdown_math = 1
 let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_autowrite = 1
 
+" ndtree
+"
+map <C-n> :NERDTreeToggle<CR>
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif 
+
 
 " airline powerline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:airline_poweline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
-"set nocompatible
 "set laststatus=2
 let g:Powerline_symbols = 'fancy'
 let Powerline_symbols='compatible'
@@ -299,7 +313,7 @@ let g:Powerline_colorscheme='solarized256'
 " 设置插件 indexer 调用 ctags 的参数
 " " 默认 --c++-kinds=+p+l，重新设置为 --c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v
 " " 默认 --fields=+iaS 不满足 YCM 要求，需改为 --fields=+iaSl
-let g:indexer_ctagsCommandLineOptions="--c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v --fields=+iaSl --extra=+q"
+"let g:indexer_ctagsCommandLineOptions="--c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v --fields=+iaSl --extra=+q"
 
 " NERDtrss
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -310,7 +324,7 @@ let g:indexer_ctagsCommandLineOptions="--c++-kinds=+p+l+x+c+d+e+f+g+m+n+s+t+u+v 
 "
 " ctags
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-:set tags+=./tags
+":set tags+=./tags
 " 正向遍历同名标签
 nmap <leader>tn :tnext<CR>  
 " 反向遍历同名标签
@@ -453,74 +467,18 @@ autocmd FileType c ClangFormatAutoEnable
 let g:clang_format#code_style = 'google'
 "let g:clang_format#extra_args = 'style=google'
 "let g:clang_format#auto_format_on_insert_leave = 1
-let g:clang_format#detect_style_file = 1
-autocmd BufWritePre *.h,*.cc,*.cpp :ClangFormat
-"
-let g:clang_format#style_options = {
-            \"Language":        "Cpp",
-            \"AccessModifierOffset": -1,
-            \"AlignAfterOpenBracket": "Align",
-            \"AlignConsecutiveAssignments": "false",
-            \"AlignConsecutiveDeclarations": "false",
-            \"AlignEscapedNewlinesLeft": "true",
-            \"AlignOperands":   "true",
-            \"AlignTrailingComments": "true",
-            \"AllowAllParametersOfDeclarationOnNextLine": "true",
-            \"AllowShortBlocksOnASingleLine": "false",
-            \"AllowShortCaseLabelsOnASingleLine": "false",
-            \"AllowShortFunctionsOnASingleLine": "All",
-            \"AllowShortIfStatementsOnASingleLine": "true",
-            \"AllowShortLoopsOnASingleLine": "true",
-            \"AlwaysBreakAfterDefinitionReturnType": "None",
-            \"AlwaysBreakAfterReturnType": "None",
-            \"AlwaysBreakBeforeMultilineStrings": "true",
-            \"AlwaysBreakTemplateDeclarations": "true",
-            \"BinPackArguments": "true",
-            \"BinPackParameters": "true",
-            \"BreakBeforeBinaryOperators": "None",
-            \"BreakBeforeBraces": "Attach",
-            \"BreakBeforeTernaryOperators": "true",
-            \"BreakConstructorInitializersBeforeComma": "false",
-            \"ColumnLimit":     80,
-            \"CommentPragmas":  '^ IWYU pragma:',
-            \"ConstructorInitializerAllOnOneLineOrOnePerLine": "true",
-            \"ConstructorInitializerIndentWidth": 4,
-            \"ContinuationIndentWidth": 4,
-            \"Cpp11BracedListStyle": "true",
-            \"DerivePointerAlignment": "true",
-            \"DisableFormat":   "false",
-            \"ExperimentalAutoDetectBinPacking": "false",
-            \"IndentCaseLabels": "true",
-            \"IndentWidth":     2,
-            \"IndentWrappedFunctionNames": "false",
-            \"KeepEmptyLinesAtTheStartOfBlocks": "false",
-            \"MacroBlockBegin": '',
-            \"MacroBlockEnd":   '',
-            \"MaxEmptyLinesToKeep": 1,
-            \"NamespaceIndentation": "None",
-            \"ObjCBlockIndentWidth": 2,
-            \"ObjCSpaceAfterProperty": "false",
-            \"ObjCSpaceBeforeProtocolList": "false",
-            \"PenaltyBreakBeforeFirstCallParameter": 1,
-            \"PenaltyBreakComment": 300,
-            \"PenaltyBreakFirstLessLess": 120,
-            \"PenaltyBreakString": 1000,
-            \"PenaltyExcessCharacter": 1000000,
-            \"PenaltyReturnTypeOnItsOwnLine": 200,
-            \"PointerAlignment": "Left",
-            \"ReflowComments":  "true",
-            \"SortIncludes":    "true",
-            \"SpaceAfterCStyleCast": "false",
-            \"SpaceBeforeAssignmentOperators": "true",
-            \"SpaceBeforeParens": "ControlStatements",
-            \"SpaceInEmptyParentheses": "false",
-            \"SpacesBeforeTrailingComments": 2,
-            \"SpacesInAngles":  "false",
-            \"SpacesInContainerLiterals": "true",
-            \"SpacesInCStyleCastParentheses": "false",
-            \"SpacesInParentheses": "false",
-            \"SpacesInSquareBrackets": "false",
-            \"Standard":        "Auto",
-            \"TabWidth":        8,
-            \"UseTab":          "Never"}
+"let g:clang_format#detect_style_file = 1
+autocmd BufWritePre *.h,*.cc,*.cpp,*.hpp :ClangFormat
 
+" vimwiki
+let g:vimwiki_list = [{'path': '~/Dropbox/vimwiki/',
+      \ 'path_html': '~/Dropbox/vimwiki/html/',
+      \ 'template_path': '~/Dropbox/vimwiki/template'}]
+      "\ 'syntax': 'markdown',
+      "\ 'ext': '.md'}]
+let g:vimwiki_valid_html_tags = ''
+let g:calendar_google_calendar = 1
+let g:calendar_google_task = 1
+let g:vimwiki_listsyms = '✗○◐●✓'
+
+"unm <buffer> <leader>ww
