@@ -73,7 +73,7 @@ Plugin 'kshenoy/vim-signature'
 Plugin 'DfrankUtil'
 Plugin 'Vimprj'
 Plugin 'vim-scripts/indexer.tar.gz'
-Plugin 'vim-latex/vim-latex' " latex
+"Plugin 'vim-latex/vim-latex' " latex
 Plugin 'vim-scripts/mru'
 Plugin 'majutsushi/tagbar'
 Plugin 'tmux-plugins/vim-tmux-focus-events'
@@ -83,6 +83,7 @@ Plugin 'rking/ag.vim'
 Plugin 'rhysd/vim-clang-format'
 Plugin 'scrooloose/nerdtree'
 Plugin 'itchyny/calendar.vim'
+"Plugin 'zxqfl/tabnine-vim'
 
 
 call vundle#end()
@@ -200,6 +201,12 @@ function! MaximizeToggle()
     only
   endif
 endfunction
+" Latex
+let g:tex_flavor='latex'
+let g:vimtex_view_method='zathura'
+let g:vimtex_quickfix_mode=0
+set conceallevel=1
+let g:tex_conceal='abdmg'
 
 " AutoCommands " 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -464,10 +471,10 @@ nmap <leader>p "+p
 let g:clang_format#command = 'clang-format'
 "nmap <F4> :ClangFormat<cr>
 autocmd FileType c ClangFormatAutoEnable
-let g:clang_format#code_style = 'google'
+"let g:clang_format#code_style = 'google'
 "let g:clang_format#extra_args = 'style=google'
 "let g:clang_format#auto_format_on_insert_leave = 1
-"let g:clang_format#detect_style_file = 1
+let g:clang_format#detect_style_file = 1
 autocmd BufWritePre *.h,*.cc,*.cpp,*.hpp :ClangFormat
 
 " vimwiki
