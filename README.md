@@ -22,7 +22,7 @@ Download and compile ycmd `cd ~/.vim/bundle/YouCompleteMe && ./install.py --clan
 `sudo apt-get install tmux`  
 `sudo apt-get install xsel` #ubuntu   
 `git clone https://github.com/gpakosz/.tmux.git`    
-`ln -sf ~/.dotfiles/tmux/tmux.conf ~/.tmux.conf && ln -sf ~/.dotfiles/tmux ~/.tmux`     
+`ln -sf ~/.dotfiles/tmux/tmux.conf ~/.tmux.conf && ln -sf ~/.dotfiles/tmux/tmux.conf.local ~/.tmux.conf.local  && ln -sf ~/.dotfiles/tmux ~/.tmux`     
 `ln -sf ~/.dotfiles/tmux/tmux.conf.local ~/.tmux.conf.local`
 `git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm`     
 #### hot key
