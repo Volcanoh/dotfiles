@@ -1,0 +1,6 @@
+[include]
+  path = .dotfiles/git/gitalias.txt
+
+[user]
+	email = huangcan@megvii.com
+	name = 黄灿

@@ -34,3 +34,7 @@ Download and compile ycmd `cd ~/.vim/bundle/YouCompleteMe && ./install.py --clan
 `sudo apt-get install zsh`  
 `sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"`  
 `chsh -s /bin/zsh`  
+
+### git
+[gitalis](https://github.com/gitalias/gitalias)
+`ln -sf ~/.dotfiles/git/gitconfig ~/.gitconfig`
